@@ -1,9 +1,12 @@
 import React from "react";
-import logo from './logo.svg';
 import queryString from 'query-string';
+import Navbar from "react-bootstrap/Navbar";
+import Nav from "react-bootstrap/Nav";
+import { LinkContainer } from "react-router-bootstrap";
 //import { render } from "react-dom";
 //import { BrowserRouter } from "react-router-dom";
 import './App.css';
+import Routes from "./Routes";
 
 const crypto = require('crypto');
 
@@ -28,12 +31,31 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      <button onClick={loginYtb}>Login to youtube</button>
+    <div className="App container py-3">
+      <Navbar collapseOnSelect bg="light" expand="md" className="mb-3">
+        <LinkContainer to="/">
+          <Navbar.Brand className="font-weight-bold text-muted">
+            Dashboard
+          </Navbar.Brand>
+        </LinkContainer>
+        <Navbar.Toggle />
+        <Navbar.Collapse className="justify-content-end">
+          <Nav activeKey={window.location.pathname}>
+            <LinkContainer to="/signup">
+              <Nav.Link>Signup</Nav.Link>
+            </LinkContainer>
+            <LinkContainer to="/login">
+              <Nav.Link>Login</Nav.Link>
+            </LinkContainer>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
+      <Routes />
+      {/*<button onClick={loginYtb}>Login to youtube</button>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>{!data ? "Loading..." : data}</p>
-      </header>
+  </header>*/}
     </div>
   );
 }

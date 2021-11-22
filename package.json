@@ -1,0 +1,30 @@
+{
+  "name": "b-dev-500-tls-5-1-cardgames-mathias.ressort",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.mjs",
+  "scripts": {
+    "start": "node server/index.mjs",
+    "build": "cd client && npm install && npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EpitechPromo2024/B-DEV-500-TLS-5-1-cardgames-mathias.ressort.git"
+  },
+  "engines": {
+    "node": "17.0.1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EpitechPromo2024/B-DEV-500-TLS-5-1-cardgames-mathias.ressort/issues"
+  },
+  "homepage": "https://github.com/EpitechPromo2024/B-DEV-500-TLS-5-1-cardgames-mathias.ressort#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "firebase": "^9.4.1",
+    "gapi": "^0.0.3"
+  }
+}

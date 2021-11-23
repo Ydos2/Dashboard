@@ -60,8 +60,23 @@ app.get("/login", (req, res) => {
     var pass = req.query.pass;
     var mail = req.query.mail;
     if (!pass || !mail)
-        res.json({ message: "empty password or mail"});
-});
+        res.status(401);
+    var dbref = ref(getDatabase());
+    var mailPath = mail.replace(mail.replace(".", "_"));
+    get(child(dbRef, path)).then((snapshot) => {
+        if (snapshot.exists() === false) {
+            res.status = 401;
+            return;
+        }
+        var currToken = snapshot.child("registerKey").val();
+        var savedPass = snapshot.child("password").val();
+        if (savedPass != pass || token !== "") {
+            res.status = 401;
+            return;
+        }
+        res.status = 200;
+    });
+    });
 
 app.get("/confirmRegister", (req, res) => {
     const dbRef = ref(getDatabase());

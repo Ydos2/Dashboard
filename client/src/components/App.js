@@ -6,7 +6,83 @@ import { LinkContainer } from "react-router-bootstrap";
 //import { render } from "react-dom";
 //import { BrowserRouter } from "react-router-dom";
 import './App.css';
-import Routes from "./Routes";
+import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
+
+// components
+import Layout from "./Layout";
+
+// pages
+import Error from "../pages/error";
+import Login from "../pages/login";
+
+// context
+import { useUserState } from "../context/UserContext";
+
+export default function App() {
+  // global
+  var { isAuthenticated } = useUserState();
+
+  return (
+    <HashRouter>
+      <Switch>
+        <Route exact path="/" render={() => <Redirect to="/app/dashboard" />} />
+        <Route
+          exact
+          path="/app"
+          render={() => <Redirect to="/app/dashboard" />}
+        />
+        <PrivateRoute path="/app" component={Layout} />
+        <PublicRoute path="/login" component={Login} />
+        <Route component={Error} />
+      </Switch>
+    </HashRouter>
+  );
+
+  // #######################################################################
+
+  function PrivateRoute({ component, ...rest }) {
+    return (
+      <Route
+        {...rest}
+        render={props =>
+          isAuthenticated ? (
+            React.createElement(component, props)
+          ) : (
+            <Redirect
+              to={{
+                pathname: "/login",
+                state: {
+                  from: props.location,
+                },
+              }}
+            />
+          )
+        }
+      />
+    );
+  }
+
+  function PublicRoute({ component, ...rest }) {
+    return (
+      <Route
+        {...rest}
+        render={props =>
+          isAuthenticated ? (
+            <Redirect
+              to={{
+                pathname: "/",
+              }}
+            />
+          ) : (
+            React.createElement(component, props)
+          )
+        }
+      />
+    );
+  }
+}
+
+
 
 const crypto = require('crypto');
 
@@ -17,7 +93,7 @@ function loginYtb() {
     var currUrl = ytbLogUrl + state;
     window.open(currUrl);
   }
-
+/*
 function App() {
   const [data, setData] = React.useState(null);
   const token = null;
@@ -55,9 +131,9 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>{!data ? "Loading..." : data}</p>
-  </header>*/}
+  </header>*//*}
     </div>
   );
 }
 
-export default App;
+export default App;*/

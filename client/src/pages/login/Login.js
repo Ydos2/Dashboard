@@ -16,7 +16,7 @@ import classnames from "classnames";
 import useStyles from "./styles";
 
 // logo
-import logo from "./logo.svg";
+import logo from "./graph.png";
 import google from "../../images/google.svg";
 
 // context
@@ -245,7 +245,7 @@ function Login(props) {
           )}
         </div>
         <Typography color="primary" className={classes.copyright}>
-        © 2021-{new Date().getFullYear()} <a style={{ textDecoration: 'none', color: 'inherit' }} href="https://github.com/Ydos2" rel="noopener noreferrer" target="_blank">Mathias Ressort</a> and <a style={{ textDecoration: 'none', color: 'inherit' }} href="https://github.com/Cotax61" rel="noopener noreferrer" target="_blank">Alexandre DESCOINS</a> All rights reserved.
+        © 2021-{new Date().getFullYear()} <a style={{ textDecoration: 'none', color: 'inherit' }} href="https://github.com/Ydos2" rel="noopener noreferrer" target="_blank">Mathias RESSORT</a> and <a style={{ textDecoration: 'none', color: 'inherit' }} href="https://github.com/Cotax61" rel="noopener noreferrer" target="_blank">Alexandre DESCOINS</a> All rights reserved.
         </Typography>
       </div>
     </Grid>

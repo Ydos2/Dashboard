@@ -2,17 +2,12 @@
 
 import path, { dirname } from 'path';
 import express from "express";
-import fs from 'fs';
-import { application } from 'express';
 import crypto from 'crypto';
 import { SMTPClient } from 'emailjs';
 import { fileURLToPath } from 'url';
-import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
 import { getDatabase, ref, set, get, child } from "firebase/database";
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { RSA_PKCS1_OAEP_PADDING } from 'constants';
-//import { http } from 'http';
+import fetch from 'node-fetch';
 
 const firebaseConfig = {
     apiKey: "AIzaSyDlBOlNSbS7qDhpvzdFtLI_s1F_L-Z_74U",
@@ -26,7 +21,6 @@ const firebaseConfig = {
 };
 
 const database = initializeApp(firebaseConfig);
-//const analytics = getAnalytics(database);
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const fbase = initializeApp(firebaseConfig);
@@ -62,19 +56,23 @@ app.get("/login", (req, res) => {
     if (!pass || !mail)
         res.status(401);
     var dbref = ref(getDatabase());
-    var mailPath = mail.replace(mail.replace(".", "_"));
-    get(child(dbRef, path)).then((snapshot) => {
+    var path = "users/" + mail.replace(".", "_");
+    get(child(dbref, path)).then((snapshot) => {
         if (snapshot.exists() === false) {
             res.status = 401;
+            res.json ({ message : "Unregistered user"});
             return;
         }
         var currToken = snapshot.child("registerKey").val();
         var savedPass = snapshot.child("password").val();
-        if (savedPass != pass || token !== "") {
+        if (savedPass != pass || currToken !== "") {
             res.status = 401;
+            res.json ({ message : "Token or password differs"});
             return;
         }
-        res.status = 200;
+        res.status(200);
+        crypto.randomBytes(21).toString("hex");
+        res.json ({ message : "connection success"});
     });
     });
 
@@ -115,14 +113,53 @@ app.get("/register", (req, res) => {
         registerKey : token
       });
       sendOAuthMail(mail, true, token);
+      res.status(200).json({ message: "c\'est ok"});
 });
 
 app.get("/api", (req, res) => {
     res.json({ message: "Hello from server!" });
 });
 
-app.get("/weather", (req, res) => {
-    res.json({ message: "I need to do that" });
+app.get("/time", async (req, res) => {
+    var q = req.query.place;
+    if (q === undefined) {
+        q = "Toulouse";
+    }
+    var response = await fetch("http://api.weatherapi.com/v1/current.json?key=25e457af789d4d3fb7d175313210911&q=Toulouse", {
+        method: 'get',
+    })
+    var json = await response.json();
+    var time = JSON.stringify(json.location.localtime).replace("\"", "").split(" ");
+    time[1] = time[1].replace("\"", "");
+    if (response.status == 200) {
+        res.json({city: json.location.name,
+        region: json.location.region,
+        country: json.location.country,
+        date: time[0],
+        time: time[1]});
+    }
+});
+
+app.get("/weather", async (req, res) => {
+    var q = req.query.place;
+    if (q === undefined) {
+        q = "Toulouse";
+    }
+    var response = await fetch("http://api.weatherapi.com/v1/current.json?key=25e457af789d4d3fb7d175313210911&q=" + q, {
+        method: 'get',
+    })
+    var json = await response.json();
+    if (response.status === 200) {
+        res.json({
+            weather: json.current.condition.text,
+            icon: json.current.condition.icon,
+            temperature: json.current.temp_c,
+            feelslike: json.current.feelslike_c,
+            humidity: json.current.humidity
+        });
+    } else {
+        res.status(404).json( { error: "not found"});
+    }
 });
 
 app.post("/registerYtbKey", (req, res) => {

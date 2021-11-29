@@ -17,7 +17,7 @@ export default function Error() {
       <div className={classes.logotype}>
         <img className={classes.logotypeIcon} src={logo} alt="logo" />
         <Typography variant="h3" color="white" className={classes.logotypeText}>
-          Material Admin
+          Dashboard
         </Typography>
       </div>
       <Paper classes={{ root: classes.paperRoot }}>

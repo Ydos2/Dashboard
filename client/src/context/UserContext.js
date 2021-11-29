@@ -1,7 +1,11 @@
 import React from "react";
+import { fetch as nfetch } from 'node-fetch';
+import axios from 'axios';
 
 var UserStateContext = React.createContext();
 var UserDispatchContext = React.createContext();
+
+const request = require('request');
 
 function userReducer(state, action) {
   switch (action.type) {
@@ -50,20 +54,23 @@ export { UserProvider, useUserState, useUserDispatch, loginUser, signOut };
 // ###########################################################
 
 async function doRequest(dispatch, login, password, history, setIsLoading, setError) {
-  setError(false);
-  setIsLoading(true);
+  /*var response = await fetch("http://localhost:8080/login?mail=Cotax61@gmail.com&pass=awaw", {
+    method: 'get',
+  })*/
 
-  const response = await fetch('http://locahost:8080/login?mail=' + login + '&pass=' + password);
-  if (response.ok) {
-    // Store response body normally
-    return;
-  }
-  if (response.status === 400) {
-    // If it's an error
-    dispatch({ type: "LOGIN_FAILURE" });
+  let result = await nfetch("http://localhost:8080/login?mail=Cotax61@gmail.com&pass=awaw");
+  let json = await result.json();
+  //console.log(result.status);
+  //console.log(json);
+
+  dispatch({ type: result.status });
+  setError(true);
+  setIsLoading(false);
+  if (result.status === 304) {
+    dispatch({ type: result.status });
     setError(true);
     setIsLoading(false);
-  } else if (response.status === 200) {
+  
     setTimeout(() => {
       localStorage.setItem('id_token', 1)
       setError(null)
@@ -71,16 +78,101 @@ async function doRequest(dispatch, login, password, history, setIsLoading, setEr
       dispatch({ type: 'LOGIN_SUCCESS' })
 
       history.push('/app/dashboard')
+      return;
     }, 2000);
+  } else {
+    // If it's an error
+    dispatch({ type: result.status });
+    setError(true);
+    setIsLoading(false);
+    return;
   }
+}
+
+function fetchdata() {
+  return fetch("http://localhost:8080/login?mail=Cotax61@gmail.com&pass=awaw").then(function(response) {
+      return response.json();
+  }).then(function(json) {
+      return json;
+  });
 }
 
 function loginUser(dispatch, login, password, history, setIsLoading, setError) {
   setError(false);
   setIsLoading(true);
-  //doRequest(dispatch, login, password, history, setIsLoading, setError);
+  doRequest(dispatch, login, password, history, setIsLoading, setError);
+  
+  /*fetch("http://localhost:8080/api").then(result => {
+      console.log(result.status);
+      if (result.status === 304) {
+        setTimeout(() => {
+          localStorage.setItem('id_token', 1)
+          setError(null)
+          setIsLoading(false)
+          dispatch({ type: 'LOGIN_SUCCESS' })
+    
+          history.push('/app/dashboard')
+          return;
+        }, 2000);
+      } else {
+        // If it's an error
+        dispatch({ type: result.status });
+        setError(true);
+        setIsLoading(false);
+        return;
+      }
+      return (result.json())
+    }).then(json => {
+        console.log(json);
+    });*/
 
-  var request = new XMLHttpRequest();
+  //const response =  fetch('http://localhost:8080/login?mail=' + login + '&pass=' + password, {method: 'GET'});
+
+  /*var sr;
+  fetch('http://localhost:8080/login?mail=Cotax61@gmail.com&pass=awaw').then(function(response) {
+    if(response.statusCode === 304) {
+      return response.blob();
+  }
+  throw new Error('Network response was not ok.');
+  }).then(function(myBlob) { 
+    dispatch({ type: 42 });
+    setError(true);
+    setIsLoading(false);
+  }).catch(function(error) {
+    dispatch({ type: error.statusCode });
+    setError(true);
+    setIsLoading(false);
+  });*/
+
+  /*fetchdata().then(function(result) {
+    result.json().then(function(json) {
+        console.log(json);
+    });
+    console.log(response.statusCode);
+    
+    if (response.statusCode === 200) {
+      dispatch({ type: response.statusCode });
+      setError(true);
+      setIsLoading(false);
+
+      setTimeout(() => {
+        localStorage.setItem('id_token', 1)
+        setError(null)
+        setIsLoading(false)
+        dispatch({ type: 'LOGIN_SUCCESS' })
+
+        history.push('/app/dashboard')
+      }, 2000);
+    } else {
+      // If it's an error
+      dispatch({ type: response.statusCode });
+      setError(true);
+      setIsLoading(false);
+    }
+  });*/
+
+  
+  /*var request = new XMLHttpRequest();
   request.onreadystatechange = (e) => {
     if (request.readyState !== 4) {
       return;
@@ -102,8 +194,8 @@ function loginUser(dispatch, login, password, history, setIsLoading, setError) {
     }
   };
   
-  request.open('GET', 'http://locahost:8080/login?mail=' + login + '&pass=' + password);
-  request.send();
+  request.open('GET', 'http://localhost:8080/login?mail=' + login + '&pass=' + password);
+  request.send();*/
   //if (!!login && !!password) {
   /*if (status == '200') {
     setTimeout(() => {

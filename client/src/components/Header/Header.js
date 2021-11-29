@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core";
 import {
   Menu as MenuIcon,
-  MailOutline as MailIcon,
+  SettingsOutlined as SettingsIcon,
   NotificationsNone as NotificationsIcon,
   Person as AccountIcon,
   Search as SearchIcon,
@@ -98,10 +98,9 @@ export default function Header(props) {
   var userDispatch = useUserDispatch();
 
   // local
-  var [mailMenu, setMailMenu] = useState(null);
-  var [isMailsUnread, setIsMailsUnread] = useState(true);
+  var [settingsMenu, setSettingsMenu] = useState(false);
+  var [isParameter, setIsParameter] = useState(true);
   var [notificationsMenu, setNotificationsMenu] = useState(null);
-  var [isNotificationsUnread, setIsNotificationsUnread] = useState(true);
   var [profileMenu, setProfileMenu] = useState(null);
   var [isSearchOpen, setSearchOpen] = useState(false);
 
@@ -137,10 +136,9 @@ export default function Header(props) {
           )}
         </IconButton>
         <Typography variant="h6" weight="medium" className={classes.logotype}>
-          React Material Admin
+          Dashboard
         </Typography>
         <div className={classes.grow} />
-        <Button component={Link} href="https://flatlogic.com/templates/react-material-admin-full" variant={"outlined"} color={"secondary"} className={classes.purchaseBtn}>Unlock full version</Button>
         <div
           className={classNames(classes.search, {
             [classes.searchFocused]: isSearchOpen,
@@ -165,35 +163,18 @@ export default function Header(props) {
         <IconButton
           color="inherit"
           aria-haspopup="true"
-          aria-controls="mail-menu"
+          aria-controls="settings-menu"
           onClick={e => {
-            setNotificationsMenu(e.currentTarget);
-            setIsNotificationsUnread(false);
+            setSettingsMenu(e.currentTarget);
+            setIsParameter(false);
           }}
           className={classes.headerMenuButton}
         >
           <Badge
-            badgeContent={isNotificationsUnread ? notifications.length : null}
-            color="warning"
-          >
-            <NotificationsIcon classes={{ root: classes.headerIcon }} />
-          </Badge>
-        </IconButton>
-        <IconButton
-          color="inherit"
-          aria-haspopup="true"
-          aria-controls="mail-menu"
-          onClick={e => {
-            setMailMenu(e.currentTarget);
-            setIsMailsUnread(false);
-          }}
-          className={classes.headerMenuButton}
-        >
-          <Badge
-            badgeContent={isMailsUnread ? messages.length : null}
+            badgeContent={isParameter ? messages.length : null}
             color="secondary"
           >
-            <MailIcon classes={{ root: classes.headerIcon }} />
+            <SettingsIcon classes={{ root: classes.headerIcon }} />
           </Badge>
         </IconButton>
         <IconButton
@@ -206,10 +187,10 @@ export default function Header(props) {
           <AccountIcon classes={{ root: classes.headerIcon }} />
         </IconButton>
         <Menu
-          id="mail-menu"
-          open={Boolean(mailMenu)}
-          anchorEl={mailMenu}
-          onClose={() => setMailMenu(null)}
+          id="settings-menu"
+          open={Boolean(settingsMenu)}
+          anchorEl={settingsMenu}
+          onClose={() => setSettingsMenu(null)}
           MenuListProps={{ className: classes.headerMenuList }}
           className={classes.headerMenu}
           classes={{ paper: classes.profileMenu }}

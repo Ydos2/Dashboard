@@ -17,4 +17,6 @@ jobs:
     - name: Build Docker compose
       run: docker-compose build
     - name: Run Docker compose
-      run: docker-compose up --build
+      run: docker-compose up
+      if: always()
+        run: docker-compose down

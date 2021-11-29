@@ -2,6 +2,7 @@
 
 import path, { dirname } from 'path';
 import express from "express";
+import cors from "cors";
 import crypto from 'crypto';
 import { SMTPClient } from 'emailjs';
 import { fileURLToPath } from 'url';
@@ -28,6 +29,8 @@ const db = getDatabase();
 var users = new Map();
 const PORT = process.env.PORT || 8080;
 const app = express();
+
+app.use(cors());
 
 const client = new SMTPClient ({
 	user: 'joojnathan.popolaf@gmail.com',

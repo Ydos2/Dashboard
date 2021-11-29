@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/EpitechPromo2024/B-DEV-500-TLS-5-1-cardgames-mathias.ressort#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "emailjs": "^3.6.0",
     "express": "^4.17.1",

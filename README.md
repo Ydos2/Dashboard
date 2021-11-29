@@ -7,3 +7,7 @@ npm start
 Open new terminal
 cd client
 npm start
+
+Or with Docker-compose
+docker-compose build
+docker-compose up

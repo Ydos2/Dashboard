@@ -16,7 +16,3 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build Docker compose
       run: docker-compose build
-    - name: Run Docker compose
-      run: docker-compose up
-      if: always()
-        run: docker-compose down

@@ -1,11 +1,8 @@
 import React from "react";
-import { fetch as nfetch } from 'node-fetch';
-import axios from 'axios';
+import * as nfetch    from 'node-fetch';
 
 var UserStateContext = React.createContext();
 var UserDispatchContext = React.createContext();
-
-const request = require('request');
 
 function userReducer(state, action) {
   switch (action.type) {
@@ -58,7 +55,12 @@ async function doRequest(dispatch, login, password, history, setIsLoading, setEr
     method: 'get',
   })*/
 
+  console.log("started");
   let result = await nfetch("http://localhost:8080/login?mail=Cotax61@gmail.com&pass=awaw");
+  console.log("finished");
+  dispatch({ type: 42 });
+  setError(true);
+  setIsLoading(false);
   let json = await result.json();
   //console.log(result.status);
   //console.log(json);
@@ -89,13 +91,6 @@ async function doRequest(dispatch, login, password, history, setIsLoading, setEr
   }
 }
 
-function fetchdata() {
-  return fetch("http://localhost:8080/login?mail=Cotax61@gmail.com&pass=awaw").then(function(response) {
-      return response.json();
-  }).then(function(json) {
-      return json;
-  });
-}
 
 function loginUser(dispatch, login, password, history, setIsLoading, setError) {
   setError(false);

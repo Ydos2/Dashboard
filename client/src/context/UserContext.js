@@ -58,16 +58,19 @@ async function doRequest(dispatch, login, password, history, setIsLoading, setEr
     method: 'get',
   })*/
 
-  let result = await nfetch("http://localhost:8080/login?mail=Cotax61@gmail.com&pass=awaw");
-  let json = await result.json();
-  //console.log(result.status);
-  //console.log(json);
+  let status = 200;
+  try {
+      let rsp = await axios.get("http://localhost:8080/login?mail=Cotax61@gmail.com&pass=awaw");
+      status = rsp.status;
+  } catch (err) {
+      status = err.response.status;
+  }
 
-  dispatch({ type: result.status });
+  dispatch({ type: status });
   setError(true);
   setIsLoading(false);
-  if (result.status === 304) {
-    dispatch({ type: result.status });
+  if (status === 304) {
+    dispatch({ type: status });
     setError(true);
     setIsLoading(false);
   
@@ -82,7 +85,7 @@ async function doRequest(dispatch, login, password, history, setIsLoading, setEr
     }, 2000);
   } else {
     // If it's an error
-    dispatch({ type: result.status });
+    dispatch({ type: status });
     setError(true);
     setIsLoading(false);
     return;

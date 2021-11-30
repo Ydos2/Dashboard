@@ -79,8 +79,8 @@ app.get("/login", (req, res) => {
 app.get("/confirmRegister", (req, res) => {
     const dbRef = ref(getDatabase());
     var mail = req.query.mail;
-    var path = "users/" + mail.replace(".", "_");
     var token = req.query.token;
+    var path = "users/" + mail.replace(".", "_");
     get(child(dbRef, path)).then((snapshot) => {
         if (snapshot.exists()) {
             var currToken = snapshot.child("registerKey").val();
@@ -103,12 +103,14 @@ app.get("/confirmRegister", (req, res) => {
 app.get("/register", (req, res) => {
     var pass = req.query.pass;
     var mail = req.query.mail;
-    if (!pass || !mail)
+    var name = req.query.name;
+    if (!pass || !mail || !name)
         res.json({ message: "empty password or mail"});
     var token = crypto.randomBytes(15).toString("hex");
     var path = mail.replace(".", "_");
     set(ref(db, 'users/' + path), {
         mail: mail,
+        name: name,
         password: pass,
         registerKey : token
       });

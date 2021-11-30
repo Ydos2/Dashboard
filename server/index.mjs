@@ -74,7 +74,7 @@ app.get("/login", (req, res) => {
         crypto.randomBytes(21).toString("hex");
         res.status(200).json ({ message : "connection success"});       ;
     });
-    });
+});
 
 app.get("/confirmRegister", (req, res) => {
     const dbRef = ref(getDatabase());
@@ -169,6 +169,37 @@ app.post("/registerYtbKey", (req, res) => {
     var currUrl = ytbLogUrl + state;
     window.location.replace(currUrl);
 });
+
+app.get("/about.json", (req, res) => {
+    var ip = req.socket.remoteAddress;
+    var time = + new Date();
+    res.json({ client: {
+        host: ip
+    },
+    current_time: time,
+    "services": [{
+        name: "weather",
+        widgets: [{
+            name: "localWeather",
+            description: "displays the local weather of the focused city",
+            params: [{
+                name: "place",
+                type: "string"
+            }],    
+        }],
+        },{
+        name: "time",
+        widgets: [{
+            name: "localTime",
+            description: "Displays the time in the targeted location",
+            params: [{
+                name: "place",
+                type: "string"
+            }],
+        }],
+    }]
+});
+})
 
 app.get('*', (req, res) => {
     res.json({ message: "idk mate" });

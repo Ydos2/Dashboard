@@ -62,20 +62,17 @@ app.get("/login", (req, res) => {
     var path = "users/" + mail.replace(".", "_");
     get(child(dbref, path)).then((snapshot) => {
         if (snapshot.exists() === false) {
-            res.status = 401;
-            res.json ({ message : "Unregistered user"});
+            res.status(401).json ({ message : "Unregistered user"});
             return;
         }
         var currToken = snapshot.child("registerKey").val();
         var savedPass = snapshot.child("password").val();
         if (savedPass != pass || currToken !== "") {
-            res.status = 401;
-            res.json ({ message : "Token or password differs"});
+            res.status(401).json ({ message : "Token or password differs"});
             return;
         }
-        res.status(200);
         crypto.randomBytes(21).toString("hex");
-        res.json ({ message : "connection success"});
+        res.status(200).json ({ message : "connection success"});       ;
     });
     });
 
@@ -89,17 +86,17 @@ app.get("/confirmRegister", (req, res) => {
             var currToken = snapshot.child("registerKey").val();
             var pass = snapshot.child("password").val();
             if (currToken != token) {
-                res.status(401)
+                res.status(401).json({ message: "unknown user"});
             } else {
                 set(ref(db, path), {
                     mail: mail,
                     password: pass,
                     registerKey: ""
                 });
-                res.status(200);
+                res.status(200).json({ message: "Sucess"});
             }
         } else
-            res.status(401);
+            res.status(401).json({ message: "unknown user"});;
     });
 });
 

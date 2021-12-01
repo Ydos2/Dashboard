@@ -112,7 +112,7 @@ export default makeStyles(theme => ({
     color: "rgba(255, 255, 255, 0.35)",
   },
   headerIconCollapse: {
-    color: "white",
+    color: "grey",
   },
   profileMenu: {
     minWidth: 265,
@@ -171,5 +171,10 @@ export default makeStyles(theme => ({
       display: 'none'
     },
     marginRight: theme.spacing(3)
-  }
+  },
+  colorLabel: {
+    position: "relative",
+    marginTop: theme.spacing(7),
+    fontSize: 18,
+    color: "darck" }
 }));

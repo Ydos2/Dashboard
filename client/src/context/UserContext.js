@@ -51,16 +51,16 @@ export { UserProvider, useUserState, useUserDispatch, registerUser, loginUser, s
 
 // ###########################################################
 
-function registerUser(dispatch, login, password, history, setIsLoading, setError) {
+function registerUser(dispatch, login, password, name, history, setIsLoading, setError) {
   setError(false);
   setIsLoading(true);
 
-  setRegisterUsers(login, password).then(res => {
+  setRegisterUsers(login, password, name).then(res => {
     if (res.status === 200) {
       setTimeout(() => {
         setError(null)
         setIsLoading(false)
-        dispatch({ type: 'LOGIN_SUCCESS' })
+        dispatch({ type: 'SIGN_OUT_SUCCESS' })
   
         history.push('/login')
         return;
@@ -69,7 +69,7 @@ function registerUser(dispatch, login, password, history, setIsLoading, setError
       setTimeout(() => {
         setError(null)
         setIsLoading(false)
-        dispatch({ type: 'LOGIN_FAILURE' })
+        dispatch({ type: 'SIGN_OUT_SUCCESS' })
   
         history.push('/login')
         return;
@@ -102,17 +102,25 @@ function loginUser(dispatch, login, password, history, setIsLoading, setError) {
       setTimeout(() => {
         setError(null)
         setIsLoading(false)
-        dispatch({ type: 'LOGIN_FAILURE' })
+        dispatch({ type: 'SIGN_OUT_SUCCESS' })
   
         history.push('/login')
         return;
       }, 2000);
     }
   }).catch((err) => setImmediate(() => {
-    console.error(err)
+    setTimeout(() => {
+      setError(null)
+      setIsLoading(false)
+      dispatch({ type: 'SIGN_OUT_SUCCESS' })
+
+      history.push('/login')
+      return;
+    }, 2000);
+    /*console.error(err)
     dispatch({ type: err });
     setError(true);
-    setIsLoading(false);
+    setIsLoading(false);*/
   }))
 }
 

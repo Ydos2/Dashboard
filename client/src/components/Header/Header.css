@@ -1,0 +1,71 @@
+:root {
+    --blue: #5e72e4;
+    --indigo: #5603ad;
+    --purple: #8965e0;
+    --pink: #f3a4b5;
+    --red: #f5365c;
+    --orange: #fb6340;
+    --yellow: #ffd600;
+    --green: #2dce89;
+    --teal: #11cdef;
+    --cyan: #2bffc6;
+    --white: #ffffff;
+    --gray: #6c757d;
+    --gray-dark: #32325d;
+    --light: #ced4da;
+    --lighter: #e9ecef;
+    --primary: #e14eca;
+    --secondary: #f4f5f7;
+    --success: #00f2c3;
+    --info: #1d8cf8;
+    --warning: #ff8d72;
+    --danger: #fd5d93;
+    --light: #adb5bd;
+    --dark: #212529;
+    --default: #344675;
+    --white: #ffffff;
+    --neutral: #ffffff;
+    --darker: black;
+    --breakpoint-xs: 0;
+    --breakpoint-sm: 576px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1200px;
+    --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+  
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box; }
+
+.fixed-plugin .badge {
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    cursor: pointer;
+    display: inline-block;
+    height: 23px;
+    margin-right: 5px;
+    position: relative;
+    width: 23px; }
+.fixed-plugin .badge.active,
+.fixed-plugin .badge:hover {
+    border-color: #1d253b; }
+.fixed-plugin .light-badge, .fixed-plugin .dark-badge {
+    margin: 0;
+    border: 1px solid #1d8cf8; }
+.fixed-plugin .light-badge:hover, .fixed-plugin .dark-badge:hover {
+      border: 1px solid #1d8cf8; }
+.fixed-plugin .light-badge {
+    background: #ffffff; }
+.fixed-plugin .light-badge:hover {
+      background: #ffffff; }
+.fixed-plugin .dark-badge {
+    background: #222a42; }
+.fixed-plugin .dark-badge:hover {
+      background: #222a42; }
+.fixed-plugin .adjustments-line .color-label {
+    position: relative;
+    top: -7px;
+    font-size: 0.62475rem;
+    color: #ffffff; }

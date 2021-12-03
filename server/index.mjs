@@ -270,6 +270,11 @@ app.get("/zeldaItem", async(req, res) => {
         }
     });
     var json = await rsp.json();
+    var item = json.count;
+    if (item == 0) {
+        res.json({name: "not found"});
+        return;
+    }
     if (res.statusCode == 200)
         res.json({ name: json.data[0].name,
                 description: json.data[0].description});
@@ -342,6 +347,35 @@ app.get("/about.json", (req, res) => {
             name: "Tendencies",
             description: "Displays the most valuable current cryptocurrencies",
         }],
+    },{
+        name: "zelda",
+        widgets: [{
+            name: "RandomItem",
+            descritpion: "Give a random item of the legend of zelda's series",
+        },{
+            name: "SearchItem",
+            description: "Search for an item from TLOZ series",
+            params: [{
+                name: "name",
+                type: "string"
+            }]
+        }]
+    },{
+        name: "RandomJoke",
+        widgets: [{
+            name: "random",
+            description: "gives you a random joke from a wide variety"
+        }]
+    },{
+        name: "new World",
+        widgets: [{
+            name: "ServerStatus",
+            description: "Know if your favorite server is up.",
+            params: [{
+                name: "name",
+                type: "string"
+            }]
+        }]
     }]
 });
 })

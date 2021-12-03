@@ -9,6 +9,7 @@ import { fileURLToPath } from 'url';
 import { getDatabase, ref, set, get, child } from "firebase/database";
 import { initializeApp } from "firebase/app";
 import fetch from 'node-fetch';
+import { getSystemErrorMap } from 'util';
 
 const firebaseConfig = {
     apiKey: "AIzaSyDlBOlNSbS7qDhpvzdFtLI_s1F_L-Z_74U",
@@ -22,13 +23,15 @@ const firebaseConfig = {
 };
 
 const database = initializeApp(firebaseConfig);
-const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const fbase = initializeApp(firebaseConfig);
 const db = getDatabase();
-var users = new Map();
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT || 8080;
 const app = express();
+const cryptoKey = "4c4a16e6-f008-4c89-8409-ece68dc8a13d"
+var ytbKey = new Map();
+var waitingYtbKey = new Map();
 
 app.use(cors());
 
@@ -40,12 +43,18 @@ const client = new SMTPClient ({
 });
 
 function sendOAuthMail(mail, confirmation, token) {
-	client.send({
+
+    client.send({
     from : "joojnathan.popolaf@gmail.com",
     to : mail,
 	subject : "[DashBob] > " + (confirmation === true ? "Account confirmation" : "Login confirmation"),
 	text : "Hello, click on the following link to confirm that this is you, if its not, please ignore this mail\n\nhttp://localhost:8080/confirmRegister?token=" + token + "&mail=" + mail,
-	},
+    attachment: {
+        path: "./assets/mailgif.gif",
+        type: "image/gif",
+        headers: {"Content-ID": "<my-gif>"},
+        },
+    },
 	(err, message) => {
 		console.log(err || message);
     });
@@ -67,12 +76,13 @@ app.get("/login", (req, res) => {
         }
         var currToken = snapshot.child("registerKey").val();
         var savedPass = snapshot.child("password").val();
+        var _username = snapshot.child("name").val();
         if (savedPass != pass || currToken !== "") {
             res.status(401).json ({ message : "Token or password differs"});
             return;
         }
         crypto.randomBytes(21).toString("hex");
-        res.status(200).json ({ message : "connection success"});       ;
+        res.status(200).json ({ username : _username});
     });
 });
 
@@ -94,6 +104,7 @@ app.get("/confirmRegister", (req, res) => {
                     registerKey: ""
                 });
                 res.status(200).json({ message: "Sucess"});
+
             }
         } else
             res.status(401).json({ message: "unknown user"});;
@@ -127,7 +138,7 @@ app.get("/time", async (req, res) => {
     if (q === undefined) {
         q = "Toulouse";
     }
-    var response = await fetch("http://api.weatherapi.com/v1/current.json?key=25e457af789d4d3fb7d175313210911&q=Toulouse", {
+    var response = await fetch("http://api.weatherapi.com/v1/current.json?key=25e457af789d4d3fb7d175313210911&q=" + q, {
         method: 'get',
     })
     var json = await response.json();
@@ -164,10 +175,138 @@ app.get("/weather", async (req, res) => {
     }
 });
 
+app.get("/trendingCrypto", async (req, res) => {
+    var rsp = await fetch("https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?limit=10&convert=EUR&start=1", {
+        method: "GET",
+        headers: {
+            "X-CMC_PRO_API_KEY": cryptoKey
+        }
+    });
+    var json = await rsp.json();
+    var jsonpush = {};
+    jsonpush.currency = [];
+    for(var i = 0; i < json.data.length; i++) {
+        var obj = json.data[i];
+        jsonpush.currency.push({
+            name: obj.name,
+            price: obj.quote.EUR.price
+        });
+    }
+    res.status(200).json(jsonpush);
+});
+
+app.get("/subscribtions", (req, res) => {
+    var mail = req.query.mail;
+    if (mail === undefined) {
+        res.status(401).json({ error: "no mail provided"});
+        return;
+    }
+    var key = ytbKey.get(mail);
+    if (key === undefined) {
+        res.status(401).json({ error: "user not logged in"});
+        return;
+    }
+});
+
+app.get("/setYtbKey", (req, res) => {
+    req.url = req.originalUrl.replace("#", "?")
+    var key = req.query.access_token;
+    var code = req.query.state;
+    var mail = waitingYtbKey.get(code);
+
+    if (key === undefined || mail === undefined || code === undefined) {
+        res.status(200).json({ error: "NO"});//res.redirect("http://localhost:3000/#/app/dashboard");
+        return;
+    }
+    ytbKey.set(mail, key);
+    res.redirect("http://localhost:3000/#/app/dashboard");
+});
+
 app.post("/registerYtbKey", (req, res) => {
     var state = crypto.randomBytes(20).toString('hex');
-    var currUrl = ytbLogUrl + state;
-    window.location.replace(currUrl);
+    var code = req.query.code;
+    var mail = req.query.mail;
+    if (mail === undefined || code === undefined) {
+        res.status(401).json({message: "no password or code sent"});
+        return;
+    }
+//    var currUrl = "https://accounts.google.com/o/oauth2/v2/auth?client_id=213049852255-7lr2e9v67g3ahhon6i072l2a2o4shgtj.apps.googleusercontent.com&redirect_uri=http://localhost:8080/setYtbKey&response_type=token&scope=https://www.googleapis.com/auth/youtube&state=" + state + "";
+       
+    waitingYtbKey.set(code, mail);
+    console.log(waitingYtbKey.get(code));
+    res.status(200).json({message: "Ok"});
+});
+
+app.get("/zeldaSearch", async(req, res) => {
+    var item = req.query.name;
+    var rsp = await fetch("https://the-legend-of-zelda.p.rapidapi.com/items?limit=1&name=" + item, {
+        "method": "GET",
+        "headers": {
+            "x-rapidapi-host": "the-legend-of-zelda.p.rapidapi.com",
+            "x-rapidapi-key": "6906c4a149mshd38212a0846a409p171065jsnf107f9262463"
+        }
+    });
+    var json = await rsp.json();
+    var item = json.count;
+    if (rsp.status != 200)  {
+        res.status(404).json({error: "api failed"});
+        return;
+    }
+    if (item == 0) {
+        res.json({name: "not found"});
+        return;
+    }
+    res.json({name: json.data[0].name,
+    description: json.data[0].description});
+})
+
+app.get("/zeldaItem", async(req, res) => {
+    var itemNb = Math.floor((Math.random() * 150) + 1);
+    var rsp = await fetch("https://the-legend-of-zelda.p.rapidapi.com/items?limit=1&page=" + itemNb, {
+        "method": "GET",
+        "headers": {
+            "x-rapidapi-host": "the-legend-of-zelda.p.rapidapi.com",
+            "x-rapidapi-key": "6906c4a149mshd38212a0846a409p171065jsnf107f9262463"
+        }
+    });
+    var json = await rsp.json();
+    if (res.statusCode == 200)
+        res.json({ name: json.data[0].name,
+                description: json.data[0].description});
+    else {
+        res.status(404).json({error: "api failed"});
+    }
+})
+
+app.get("/newWorld", async (req, res) => {
+    var srv = req.query.server;
+    var rsp = await fetch("https://new-world-server-status.p.rapidapi.com/server/" + srv, {
+        "method": "GET",
+        "headers": {
+            "x-rapidapi-host": "new-world-server-status.p.rapidapi.com",
+            "x-rapidapi-key": "6906c4a149mshd38212a0846a409p171065jsnf107f9262463"
+        }
+    });
+    if (rsp.status == 200) {
+        var json = await rsp.json();
+        res.json({name: json.ServerName,
+        status: json.ServerStatus});
+    } else {
+        res.json({ error: "not found"});
+    }
+})
+
+app.get("/randomJoke", async (req, res) => {
+    var rsp = await fetch("https://dad-jokes.p.rapidapi.com/random/joke/png", {
+        "method": "GET",
+        "headers": {
+            "x-rapidapi-host": "dad-jokes.p.rapidapi.com",
+            "x-rapidapi-key": "6906c4a149mshd38212a0846a409p171065jsnf107f9262463"
+        }
+    });
+    var js = await rsp.json();
+    res.json({setup: js.body.setup,
+    punchline: js.body.punchline});
 });
 
 app.get("/about.json", (req, res) => {
@@ -186,16 +325,22 @@ app.get("/about.json", (req, res) => {
                 name: "place",
                 type: "string"
             }],    
+        },{
+            name: "time",
+            widgets: [{
+                name: "localTime",
+                description: "Displays the time in the targeted location",
+                params: [{
+                    name: "place",
+                    type: "string"
+                }],
+            }],
         }],
         },{
-        name: "time",
+        name: "crypto",
         widgets: [{
-            name: "localTime",
-            description: "Displays the time in the targeted location",
-            params: [{
-                name: "place",
-                type: "string"
-            }],
+            name: "Tendencies",
+            description: "Displays the most valuable current cryptocurrencies",
         }],
     }]
 });

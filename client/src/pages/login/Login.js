@@ -206,6 +206,7 @@ function Login(props) {
                         userDispatch,
                         loginValue,
                         passwordValue,
+                        nameValue,
                         props.history,
                         setIsLoading,
                         setError,

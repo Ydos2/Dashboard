@@ -1,5 +1,4 @@
-FROM node:10.16.3
-
+FROM node:16
 WORKDIR .
 
 # RUN "echo REACT_APP_DEV_ENV=TRUE" > .env

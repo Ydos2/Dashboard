@@ -190,69 +190,81 @@ app.get("/forgotPassword", (req, res) => {
 });
 
 app.get("/time", async (req, res) => {
-    var q = req.query.place;
-    if (q === undefined) {
-        q = "Toulouse";
-    }
-    var response = await fetch("http://api.weatherapi.com/v1/current.json?key=25e457af789d4d3fb7d175313210911&q=" + q, {
-        method: 'get',
-    })
-    var json = await response.json();
-    if (response.status == 200) {
-        var time = JSON.stringify(json.location.localtime).replace("\"", "").split(" ");
-        time[1] = time[1].replace("\"", "");
-        res.json({city: json.location.name,
-        region: json.location.region,
-        country: json.location.country,
-        date: time[0],
-        time: time[1]});
-    } else {
-        res.status(400).json({error: "not found"});
+    try {
+        var q = req.query.place;
+        if (q === undefined) {
+            q = "Toulouse";
+        }
+        var response = await fetch("http://api.weatherapi.com/v1/current.json?key=25e457af789d4d3fb7d175313210911&q=" + q, {
+            method: 'get',
+        })
+        var json = await response.json();
+        if (response.status == 200) {
+            var time = JSON.stringify(json.location.localtime).replace("\"", "").split(" ");
+            time[1] = time[1].replace("\"", "");
+            res.json({city: json.location.name,
+            region: json.location.region,
+            country: json.location.country,
+            date: time[0],
+            time: time[1]});
+        } else {
+            res.status(400).json({error: "not found"});
+        }
+    } catch (e) {
+        res.status(401).json({error: "unknown error"});
     }
 });
 
 app.get("/weather", async (req, res) => {
-    var q = req.query.place;
-    if (q === undefined) {
-        q = "Toulouse";
-    }
-    var response = await fetch("http://api.weatherapi.com/v1/current.json?key=25e457af789d4d3fb7d175313210911&q=" + q, {
-        method: 'get',
-    })
-    var json = await response.json();
-    if (response.status === 200) {
-        var time = JSON.stringify(json.location.localtime).replace("\"", "").split(" ");
-        time[1] = time[1].replace("\"", "");
-        res.json({
-            weather: json.current.condition.text,
-            icon: json.current.condition.icon,
-            temperature: json.current.temp_c,
-            feelslike: json.current.feelslike_c,
-            humidity: json.current.humidity
-        });
-    } else {
-        res.status(404).json( { error: "not found"});
+    try {
+        var q = req.query.place;
+        if (q === undefined) {
+            q = "Toulouse";
+        }
+        var response = await fetch("http://api.weatherapi.com/v1/current.json?key=25e457af789d4d3fb7d175313210911&q=" + q, {
+            method: 'get',
+        })
+        var json = await response.json();
+        if (response.status === 200) {
+            var time = JSON.stringify(json.location.localtime).replace("\"", "").split(" ");
+            time[1] = time[1].replace("\"", "");
+            res.json({
+                weather: json.current.condition.text,
+                icon: json.current.condition.icon,
+                temperature: json.current.temp_c,
+                feelslike: json.current.feelslike_c,
+                humidity: json.current.humidity
+            });
+        } else {
+            res.status(404).json( { error: "not found"});
+        }
+    } catch (e) {
+        res.status(401).json({error: "unknown error"});
     }
 });
 
 app.get("/trendingCrypto", async (req, res) => {
-    var rsp = await fetch("https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?limit=10&convert=EUR&start=1", {
-        method: "GET",
-        headers: {
-            "X-CMC_PRO_API_KEY": cryptoKey
-        }
-    });
-    var json = await rsp.json();
-    var jsonpush = {};
-    jsonpush.currency = [];
-    for(var i = 0; i < json.data.length; i++) {
-        var obj = json.data[i];
-        jsonpush.currency.push({
-            name: obj.name,
-            price: obj.quote.EUR.price
+    try {
+        var rsp = await fetch("https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?limit=10&convert=EUR&start=1", {
+            method: "GET",
+            headers: {
+                "X-CMC_PRO_API_KEY": cryptoKey
+            }
         });
+        var json = await rsp.json();
+        var jsonpush = {};
+        jsonpush.currency = [];
+        for(var i = 0; i < json.data.length; i++) {
+            var obj = json.data[i];
+            jsonpush.currency.push({
+                name: obj.name,
+                price: obj.quote.EUR.price
+            });
+        }
+        res.status(200).json(jsonpush);
+    } catch (e) {
+        res.status(401).json({error: "unknown error"});
     }
-    res.status(200).json(jsonpush);
 });
 
 app.get("/subscribtions", (req, res) => {
@@ -269,7 +281,6 @@ app.get("/subscribtions", (req, res) => {
 });
 
 app.psot("/setYtbKey", (req, res) => {
-    req.url = req.originalUrl.replace("#", "?")
     var key = req.query.access_token;
     var mail = req.query.mail;
 
@@ -282,70 +293,82 @@ app.psot("/setYtbKey", (req, res) => {
 });
 
 app.get("/zeldaSearch", async(req, res) => {
-    var item = req.query.name;
-    var rsp = await fetch("https://the-legend-of-zelda.p.rapidapi.com/items?limit=1&name=" + item, {
-        "method": "GET",
-        "headers": {
-            "x-rapidapi-host": "the-legend-of-zelda.p.rapidapi.com",
-            "x-rapidapi-key": "6906c4a149mshd38212a0846a409p171065jsnf107f9262463"
+    try {
+        var item = req.query.name;
+        var rsp = await fetch("https://the-legend-of-zelda.p.rapidapi.com/items?limit=1&name=" + item, {
+            "method": "GET",
+            "headers": {
+                "x-rapidapi-host": "the-legend-of-zelda.p.rapidapi.com",
+                "x-rapidapi-key": "6906c4a149mshd38212a0846a409p171065jsnf107f9262463"
+            }
+        });
+        var json = await rsp.json();
+        var item = json.count;
+        if (rsp.status != 200)  {
+            res.status(404).json({error: "api failed"});
+            return;
         }
-    });
-    var json = await rsp.json();
-    var item = json.count;
-    if (rsp.status != 200)  {
-        res.status(404).json({error: "api failed"});
-        return;
+        if (item == 0) {
+            res.json({name: "not found"});
+            return;
+        }
+        res.json({name: json.data[0].name,
+        description: json.data[0].description});
+    } catch (e) {
+        res.status(401).json({error: "unknown error"});
     }
-    if (item == 0) {
-        res.json({name: "not found"});
-        return;
-    }
-    res.json({name: json.data[0].name,
-    description: json.data[0].description});
 })
 
 app.get("/zeldaItem", async(req, res) => {
-    var itemNb = Math.floor((Math.random() * 150) + 1);
-    var rsp = await fetch("https://the-legend-of-zelda.p.rapidapi.com/items?limit=1&page=" + itemNb, {
-        "method": "GET",
-        "headers": {
-            "x-rapidapi-host": "the-legend-of-zelda.p.rapidapi.com",
-            "x-rapidapi-key": "6906c4a149mshd38212a0846a409p171065jsnf107f9262463"
+    try {
+        var itemNb = Math.floor((Math.random() * 150) + 1);
+        var rsp = await fetch("https://the-legend-of-zelda.p.rapidapi.com/items?limit=1&page=" + itemNb, {
+            "method": "GET",
+            "headers": {
+                "x-rapidapi-host": "the-legend-of-zelda.p.rapidapi.com",
+                "x-rapidapi-key": "6906c4a149mshd38212a0846a409p171065jsnf107f9262463"
+            }
+        });
+        var json = await rsp.json();
+        console.log(json);
+        var item = json.count;
+        if (item == 0) {
+            res.json({name: "not found"});
+            return;
+        } else if (json.data === undefined) {
+            res.status(404).json({error: "api failed"});
+            return;
         }
-    });
-    var json = await rsp.json();
-    console.log(json);
-    var item = json.count;
-    if (item == 0) {
-        res.json({name: "not found"});
-        return;
-    } else if (json.data === undefined) {
-        res.status(404).json({error: "api failed"});
-        return;
-    }
-    if (res.statusCode == 200)
-        res.json({ name: json.data[0].name,
-                description: json.data[0].description});
-    else {
-        res.status(404).json({error: "api failed"});
+        if (res.statusCode == 200)
+            res.json({ name: json.data[0].name,
+                    description: json.data[0].description});
+        else {
+            res.status(404).json({error: "api failed"});
+        }
+    } catch (e) {
+        res.status(401).json({error: "unknown error"});
     }
 });
 
 app.get("/newWorld", async (req, res) => {
-    var srv = req.query.server;
-    var rsp = await fetch("https://new-world-server-status.p.rapidapi.com/server/" + srv, {
-        "method": "GET",
-        "headers": {
-            "x-rapidapi-host": "new-world-server-status.p.rapidapi.com",
-            "x-rapidapi-key": "6906c4a149mshd38212a0846a409p171065jsnf107f9262463"
+    try {
+        var srv = req.query.server;
+        var rsp = await fetch("https://new-world-server-status.p.rapidapi.com/server/" + srv, {
+            "method": "GET",
+            "headers": {
+                "x-rapidapi-host": "new-world-server-status.p.rapidapi.com",
+                "x-rapidapi-key": "6906c4a149mshd38212a0846a409p171065jsnf107f9262463"
+            }
+        });
+        if (rsp.status == 200) {
+            var json = await rsp.json();
+            res.json({name: json.ServerName,
+            status: json.ServerStatus});
+        } else {
+            res.json({ error: "not found"});
         }
-    });
-    if (rsp.status == 200) {
-        var json = await rsp.json();
-        res.json({name: json.ServerName,
-        status: json.ServerStatus});
-    } else {
-        res.json({ error: "not found"});
+    } catch (e) {
+        res.status(401).json({error: "unknown error"});
     }
 });
 
@@ -427,6 +450,12 @@ app.get("/about.json", (req, res) => {
                 name: "name",
                 type: "string"
             }]
+        }]
+    },{
+        name: "crypto",
+        widgets: [{
+            name: "trending",
+            description: "Check the price of the new trending cryptos"
         }]
     }]
 });

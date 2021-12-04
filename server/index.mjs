@@ -271,7 +271,7 @@ app.get("/subscribtions", (req, res) => {
 app.get("/setYtbKey", (req, res) => {
     req.url = req.originalUrl.replace("#", "?")
     var key = req.query.access_token;
-    var mail = waitingYtbKey.get(code);
+    var mail = req.query.mail;
 
     if (key === undefined || mail === undefined) {
         res.status(200).json({ error: "NO"});//res.redirect("http://localhost:3000/#/app/dashboard");

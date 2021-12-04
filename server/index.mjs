@@ -330,9 +330,13 @@ app.get("/zeldaItem", async(req, res) => {
         }
     });
     var json = await rsp.json();
+    console.log(json);
     var item = json.count;
     if (item == 0) {
         res.json({name: "not found"});
+        return;
+    } else if (json.data === undefined) {
+        res.status(404).json({error: "api failed"});
         return;
     }
     if (res.statusCode == 200)

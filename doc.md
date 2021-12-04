@@ -1,0 +1,84 @@
+# Server Documentation <br>
+
+The server is located on the port 8080 of the machine's localhost.<br>
+If you wish to run the server just type `npm start` on your terminal and voila! <br><br>
+
+## See informations <br>
+
+To see informations about widgets you can call `http://localhost:8080/about.json` on your browser.<br>
+A JSON file will be returned to you that will tell you wich services have been implemented, if you implement a service, please update that route in `src/index.mjs` <br> <br>
+
+## Services
+
+Here is a list of the actual services, how to use them and how to extract data from them, all these data will be a simple JSON.<br>
+All the calls have to be with the method GET and will return a 200 on success, otherwise see the `on error` section <br> <br>
+
+`/time`<br>
+Gives you the time from this place, always funny to know.<br>
+**params**<br>
+`place`=(City or country to check) \=> default: Toulouse<br>
+**return value**<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;`city:`The city (or the capital of the targeted country)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;`region:`The region of the targeted place<br>
+&nbsp;&nbsp;&nbsp;&nbsp;`country:`The targeted country<br>
+&nbsp;&nbsp;&nbsp;&nbsp;`date:`The current date in the targeted city<br>
+&nbsp;&nbsp;&nbsp;&nbsp;`time:`Current time in targeted city<br>
+}<br>
+**on error**<br>
+The response code is `404` in case no city was found<br><br>
+
+`/weather`<br>
+Gives you the weather from this place, so you can be jealous because its raining in you country \>\:\).<br>
+**params**<br>
+`place`=(City or country to check) \=> default: Toulouse<br>
+**return value**<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;`weather:`The current weather in this country<br>
+&nbsp;&nbsp;&nbsp;&nbsp;`icon:`A link to a cute image that shows the weather<br>
+&nbsp;&nbsp;&nbsp;&nbsp;`temperature:`The actual temperature in this place in Celsius<br>
+&nbsp;&nbsp;&nbsp;&nbsp;`feelslike:`The temperature you feel when you actually go out (in Celsius)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;`humidity:`The humidity of the air in per cent<br>
+}<br>
+**on error**<br>
+The response code is `404` in case no city was found<br><br>
+`/RandomJoke` <br>
+This route gives you a random "dad joke" from a wide variety <br>
+**return value** <br>
+{ <br>
+&nbsp;&nbsp;&nbsp;&nbsp;`setup:` the setup of the joke  <br>
+&nbsp;&nbsp;&nbsp;&nbsp;`punchline:` The punchline of the joke AKA the funny<br>
+} <br><br>
+
+`/newWorld`<br>
+This route gives you the status of the server from the MMO __new world__<br>
+**params**<br>
+`name`=(The name of the server you want to know the status)<br>
+**return value**<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;`name:`The name of the server<br>
+&nbsp;&nbsp;&nbsp;&nbsp;`status:`The status of the server<br>
+}<br><br>
+
+`/zeldaSearch`<br>
+Gives you informations about an item from any TLoZ game<br>
+**params**<br>
+`name`=(The name of the item)<br>
+**return value**<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;`name:`The name of the item<br>
+&nbsp;&nbsp;&nbsp;&nbsp;`description:`A small description about the item<br>
+}<br>
+**on error**<br>
+The API may be instable and return a `404` to you, i can't do anything about that<br><br>
+
+
+`/zeldaItem`<br>
+Gives you informations about a random item from any TLoZ game<br>
+**return value**<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;`name:`The name of the item<br>
+&nbsp;&nbsp;&nbsp;&nbsp;`description:`A small description about the item<br>
+}<br>
+**on error**<br>
+The API may be instable and return a `404` to you, i can't do anything about that<br><br>

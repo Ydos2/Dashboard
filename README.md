@@ -20,3 +20,6 @@ We were interested in this language and framework and JS looked pretty usefull t
 ## [With Docker-compose]
 - docker-compose build
 - docker-compose up
+
+## Misc... <br>
+Documentation and functional tests are at the root of the project, please refer to [doc.md](./doc.md) for documentation and [functionalTests.md](./functionalTests.md) if you wish to do testing or you just want to understand how the program works

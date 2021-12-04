@@ -42,8 +42,17 @@ const client = new SMTPClient ({
 	ssl: true,
 });
 
-function sendOAuthMail(mail, confirmation, token) {
+function sendPasswordMail(mail, token)
+{
+    client.send( {
+        from: "joojnathan.popolaf@gmail.com",
+        to: mail,
+        subject: "[DashBob] > Password reset",
+        text: "Hello, it seems that u forgor 💀 your password click on the following link to reset it\n\nhttp://localhost:8080/verifyToken?" + token,
+    })
+}
 
+function sendOAuthMail(mail, confirmation, token) {
     client.send({
     from : "joojnathan.popolaf@gmail.com",
     to : mail,
@@ -87,10 +96,10 @@ app.get("/login", (req, res) => {
 });
 
 app.get("/confirmRegister", (req, res) => {
-    const dbRef = ref(getDatabase());
     var mail = req.query.mail;
     var token = req.query.token;
     var path = "users/" + mail.replace(".", "_");
+    const dbRef = ref(getDatabase());
     get(child(dbRef, path)).then((snapshot) => {
         if (snapshot.exists()) {
             var currToken = snapshot.child("registerKey").val();
@@ -100,14 +109,41 @@ app.get("/confirmRegister", (req, res) => {
             } else {
                 set(ref(db, path), {
                     mail: mail,
+                    name: snapshot.child("name").val(),
                     password: pass,
                     registerKey: ""
                 });
-                res.status(200).json({ message: "Sucess"});
-
+                res.status(200).json({ message: "Sucess"}).redirect("http://localhost:3000/dashboard/login");
             }
         } else
             res.status(401).json({ message: "unknown user"});;
+    });
+});
+
+app.get("/resetPassword", (req, res) => {
+    var token = req.query.token;
+    var mail = req.query.mail;
+    var newPass = req.query.pass;
+    var path = "users/" + mail.replace(".", "_");
+    if (mail === undefined || token === undefined || newPass === undefined) {
+        res.status(401).json({message: "Something is missing"});
+        return;
+    }
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, path)).then((snapshot) => {
+        if (snapshot.exists() && snapshot.child("registerKey").val == token) {
+            set(ref(db, path), {
+                mail: mail,
+                registerKey: snapshot.child("registerKey").val(),
+                password: newPass,
+                name: snapshot.child("name").val(),
+                registerKey: ""
+            });
+            res.status(200).json({message: "ok"});
+        } else {
+            res.status(404).json({error: "unknown user"});
+            return;
+        }
     });
 });
 
@@ -129,8 +165,28 @@ app.get("/register", (req, res) => {
       res.status(200).json({ message: "c\'est ok"});
 });
 
-app.get("/api", (req, res) => {
-    res.json({ message: "Hello from server!" });
+app.get("/forgotPassword", (req, res) => {
+    var mail = req.query.mail;
+    var path = "users/" + mail.replace(".", "_");
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, path)).then((snapshot) => {
+        if (snapshot.exists()) { 
+            var key = crypto.randomBytes(20).toString("hex");
+            set(ref(db, path), {
+                mail: mail,
+                password: snapshot.child("password").val(),
+                registerKey: snapshot.child("registerKey").val(),
+                name: snapshot.child("name").val(),
+                passChangeKey: key 
+            });
+            res.status(200).json({message: "ok"});
+            sendPasswordMail(mail, key);
+            return;
+        } else {
+            res.status(404).json({message: "unknown user"});
+            return
+        }
+    });
 });
 
 app.get("/time", async (req, res) => {
@@ -142,14 +198,16 @@ app.get("/time", async (req, res) => {
         method: 'get',
     })
     var json = await response.json();
-    var time = JSON.stringify(json.location.localtime).replace("\"", "").split(" ");
-    time[1] = time[1].replace("\"", "");
     if (response.status == 200) {
+        var time = JSON.stringify(json.location.localtime).replace("\"", "").split(" ");
+        time[1] = time[1].replace("\"", "");
         res.json({city: json.location.name,
         region: json.location.region,
         country: json.location.country,
         date: time[0],
         time: time[1]});
+    } else {
+        res.status(400).json({error: "not found"});
     }
 });
 
@@ -163,6 +221,8 @@ app.get("/weather", async (req, res) => {
     })
     var json = await response.json();
     if (response.status === 200) {
+        var time = JSON.stringify(json.location.localtime).replace("\"", "").split(" ");
+        time[1] = time[1].replace("\"", "");
         res.json({
             weather: json.current.condition.text,
             icon: json.current.condition.icon,
@@ -281,7 +341,7 @@ app.get("/zeldaItem", async(req, res) => {
     else {
         res.status(404).json({error: "api failed"});
     }
-})
+});
 
 app.get("/newWorld", async (req, res) => {
     var srv = req.query.server;
@@ -299,19 +359,23 @@ app.get("/newWorld", async (req, res) => {
     } else {
         res.json({ error: "not found"});
     }
-})
+});
 
 app.get("/randomJoke", async (req, res) => {
-    var rsp = await fetch("https://dad-jokes.p.rapidapi.com/random/joke/png", {
-        "method": "GET",
-        "headers": {
-            "x-rapidapi-host": "dad-jokes.p.rapidapi.com",
-            "x-rapidapi-key": "6906c4a149mshd38212a0846a409p171065jsnf107f9262463"
-        }
-    });
-    var js = await rsp.json();
-    res.json({setup: js.body.setup,
-    punchline: js.body.punchline});
+    try {
+        var rsp = await fetch("https://dad-jokes.p.rapidapi.com/random/joke/png", {
+            "method": "GET",
+            "headers": {
+                "x-rapidapi-host": "dad-jokes.p.rapidapi.com",
+                "x-rapidapi-key": "6906c4a149mshd38212a0846a409p171065jsnf107f9262463"
+            }
+        });
+        var js = await rsp.json();
+        res.json({setup: js.body.setup,
+        punchline: js.body.punchline});
+    } catch {
+        res.status(401).json({error: "Api calls overload"});
+    }
 });
 
 app.get("/about.json", (req, res) => {
@@ -378,7 +442,7 @@ app.get("/about.json", (req, res) => {
         }]
     }]
 });
-})
+});
 
 app.get('*', (req, res) => {
     res.json({ message: "idk mate" });

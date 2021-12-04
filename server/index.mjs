@@ -271,30 +271,14 @@ app.get("/subscribtions", (req, res) => {
 app.get("/setYtbKey", (req, res) => {
     req.url = req.originalUrl.replace("#", "?")
     var key = req.query.access_token;
-    var code = req.query.state;
     var mail = waitingYtbKey.get(code);
 
-    if (key === undefined || mail === undefined || code === undefined) {
+    if (key === undefined || mail === undefined) {
         res.status(200).json({ error: "NO"});//res.redirect("http://localhost:3000/#/app/dashboard");
         return;
     }
     ytbKey.set(mail, key);
     res.redirect("http://localhost:3000/#/app/dashboard");
-});
-
-app.post("/registerYtbKey", (req, res) => {
-    var state = crypto.randomBytes(20).toString('hex');
-    var code = req.query.code;
-    var mail = req.query.mail;
-    if (mail === undefined || code === undefined) {
-        res.status(401).json({message: "no password or code sent"});
-        return;
-    }
-//    var currUrl = "https://accounts.google.com/o/oauth2/v2/auth?client_id=213049852255-7lr2e9v67g3ahhon6i072l2a2o4shgtj.apps.googleusercontent.com&redirect_uri=http://localhost:8080/setYtbKey&response_type=token&scope=https://www.googleapis.com/auth/youtube&state=" + state + "";
-       
-    waitingYtbKey.set(code, mail);
-    console.log(waitingYtbKey.get(code));
-    res.status(200).json({message: "Ok"});
 });
 
 app.get("/zeldaSearch", async(req, res) => {

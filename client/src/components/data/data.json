@@ -1,0 +1,12 @@
+[
+    {
+      "id": 0,
+      "nameWidget": "weather",
+      "stateWidget": false
+    },
+    {
+      "id": 1,
+      "nameWidget": "crypto",
+      "stateWidget": false
+    }
+  ]

@@ -28,8 +28,33 @@ import { useUserDispatch, signOut } from "../../context/UserContext";
 
 import { ThemeContext, themes } from "../../context/ThemeContext";
 
-import DialogBox from "../DialogBox/DialogBox";
-import NewWidget from "../NewWidget/NewWidget";
+//import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Slide from '@mui/material/Slide';
+import Avatar from '@mui/material/Avatar';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemText from '@mui/material/ListItemText';
+
+import { widgetConf, cookies } from "../Cards/ConfWidget";
+import { reloadPage } from '../../pages/dashboard/Dashboard';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
+function writeJson(widgetId)
+{
+  cookies.set('widget'+widgetId, "true", { path: '/', sameSite: 'lax' });
+  console.log(cookies.get('widget0'));
+  console.log('Header');
+  reloadPage();
+}
 
 export default function Header(props) {
   var classes = useStyles();
@@ -40,14 +65,61 @@ export default function Header(props) {
   var [settingsMenu, setSettingsMenu] = useState(false);
   var [isParameter, setIsParameter] = useState(true);
   var [profileMenu, setProfileMenu] = useState(null);
+  
+  const [open, setOpen] = React.useState(false);
 
-  let [open, setOpen] = useState(false);
-  const DialogHandle = () => {
-    setOpen((current) => !current);
+  const handleClickOpen = () => {
+    setOpen(true);
   };
 
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const placeItem = (widgetId) => {
+    setOpen(false);
+    writeJson(widgetId);
+  };
+
+  widgetConf.map((obj) =>
+    (obj.id == 0) ? (cookies.get('widget0') == "true") ? obj.stateWidget = "true" : obj.stateWidget = "false" :
+    (obj.id == 1) ? (cookies.get('widget1') == "true") ? obj.stateWidget = "true" : obj.stateWidget = "false" : null
+  );
+  console.log(widgetConf);
+
   return (
-    <AppBar position="fixed" className={classes.appBar}>
+    <>
+      <div>
+        <Dialog
+          open={open}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={handleClose}
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogTitle>{"Add your Widget !"}</DialogTitle>
+          <List sx={{ pt: 0 }}>
+            {widgetConf.map((widgetObj) => (
+              <ListItem button onClick={() => placeItem(widgetObj.id)} key={widgetObj}>
+                {widgetObj.stateWidget == "true" ? null :
+                <>
+                  <ListItemAvatar>
+                    <Avatar>
+                      <AddIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText primary={widgetObj.nameWidget} />
+                </>}
+              </ListItem>
+            ))}
+          </List>
+          <DialogActions>
+            <Button onClick={handleClose}>Close</Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+
+      <AppBar position="fixed" className={classes.appBar}>
       <Toolbar className={classes.toolbar}>
         <Typography variant="h6" weight="medium" className={classes.logotype}>
           Dashboard
@@ -57,7 +129,7 @@ export default function Header(props) {
         <IconButton
           color="inherit"
           aria-haspopup="true"
-          onClick={DialogHandle}
+          onClick={handleClickOpen}
           className={classes.headerMenuButton}
         >
           <Badge
@@ -171,13 +243,8 @@ export default function Header(props) {
           </div>
         </Menu>
       </Toolbar>
-      <div>
-        {open && (
-          <DialogBox open={open} OnDialogHandle={DialogHandle}>
-            <NewWidget id={""} />
-          </DialogBox>
-        )}
-      </div>
     </AppBar>
+    </>
+    
   );
 }

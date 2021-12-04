@@ -4,28 +4,35 @@
     "private": true,
     "dependencies": {
         "@headlessui/react": "^1.4.2",
+        "@hookstate/core": "^3.0.13",
         "@material-ui/core": "^4.12.3",
         "@material-ui/icons": "^4.11.2",
         "@material-ui/styles": "^4.11.4",
         "@mdi/js": "^6.5.95",
         "@mdi/react": "^1.5.0",
+        "@mui/material": "^5.2.2",
         "@testing-library/jest-dom": "^5.15.0",
         "@testing-library/react": "^11.2.7",
         "@testing-library/user-event": "^12.8.3",
         "aws-amplify": "^4.3.8",
         "axios": "^0.24.0",
+        "browserify-fs": "^1.0.0",
         "font-awesome": "^4.7.0",
+        "fs": "^0.0.1-security",
+        "mui": "^0.0.1",
         "mui-datatables": "^4.0.0",
         "react": "^17.0.2",
         "react-bootstrap": "^1.6.1",
         "react-chartjs-2": "^4.0.0",
         "react-dom": "^17.0.2",
+        "react-hooks-use-modal": "^2.1.0",
         "react-icons": "^4.3.1",
         "react-router-bootstrap": "^0.25.0",
         "react-router-dom": "^5.2.0",
         "react-scripts": "^4.0.3",
         "reactstrap": "^9.0.1",
         "tinycolor2": "^1.4.2",
+        "universal-cookie": "^4.0.4",
         "web-vitals": "^1.1.2"
     },
     "scripts": {
@@ -53,5 +60,10 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
+    },
+    "devDependencies": {
+        "autoprefixer": "^9.8.8",
+        "postcss": "^7.0.39",
+        "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17"
     }
 }

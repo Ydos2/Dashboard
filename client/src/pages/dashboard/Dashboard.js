@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, setState } from "react";
 import { useTheme } from "@material-ui/styles";
 
 // nodejs library that concatenates classes
@@ -38,12 +38,38 @@ import {
 // styles
 import useStyles from "./styles";
 
+import ActionAreaCard from "../../components/Cards/Card";
+import WeatherCard from "../../components/Cards/Weather";
+import CryptoCard from "../../components/Cards/Crypto";
+
+import { widgetConf, cookies } from "../../components/Cards/ConfWidget";
+
+export function reloadPage()
+{
+  window.location.reload(false);
+}
+
 export default function Dashboard(props) {
   var classes = useStyles();
   var theme = useTheme();
 
+  widgetConf.map((obj) =>
+    (obj.id == 0) ? obj.stateWidget = cookies.get('widget0') :
+    (obj.id == 1) ? obj.stateWidget = cookies.get('widget1') : null
+  );
+  console.log(widgetConf);
+
   return (
+    
     <div className="content">
+      {widgetConf.map((widgetObj) => (
+        widgetObj.stateWidget == "true" ?
+        <>
+          {(widgetObj.id == 0) ? <WeatherCard></WeatherCard> : null}
+          {(widgetObj.id == 1) ? <CryptoCard></CryptoCard> : null}
+        </> : null
+      ))}
+
       {/**Template widget */}
       <Row>
         <Col lg="4">

@@ -4,6 +4,7 @@ import { getAllUsers, setRegisterUsers } from "../containers/AllFetch";
 
 var UserStateContext = React.createContext();
 var UserDispatchContext = React.createContext();
+var WidgetContext = React.createContext();
 
 function userReducer(state, action) {
   switch (action.type) {
@@ -47,7 +48,15 @@ function useUserDispatch() {
   return context;
 }
 
-export { UserProvider, useUserState, useUserDispatch, registerUser, loginUser, signOut };
+function useWidgetDispatch() {
+  var context = React.useContext(WidgetContext);
+  if (context === undefined) {
+    throw new Error("Error");
+  }
+  return context;
+}
+
+export { UserProvider, useUserState, useUserDispatch, useWidgetDispatch, registerUser, loginUser, signOut };
 
 // ###########################################################
 

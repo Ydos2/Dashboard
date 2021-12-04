@@ -172,6 +172,17 @@ export default makeStyles(theme => ({
     },
     marginRight: theme.spacing(3)
   },
+  modalStyle: {
+    background: '#fff',
+    padding: '60px 100px',
+    borderRadius: '10px'
+  },
+  transButton: {
+    fixedInset: 0,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
+  },
   colorLabel: {
     position: "relative",
     marginTop: theme.spacing(7),

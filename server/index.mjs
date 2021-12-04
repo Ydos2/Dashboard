@@ -268,17 +268,17 @@ app.get("/subscribtions", (req, res) => {
     }
 });
 
-app.get("/setYtbKey", (req, res) => {
+app.psot("/setYtbKey", (req, res) => {
     req.url = req.originalUrl.replace("#", "?")
     var key = req.query.access_token;
     var mail = req.query.mail;
 
     if (key === undefined || mail === undefined) {
-        res.status(200).json({ error: "NO"});//res.redirect("http://localhost:3000/#/app/dashboard");
+        res.status(401).json({ error: "NO"});//res.redirect("http://localhost:3000/#/app/dashboard");
         return;
     }
     ytbKey.set(mail, key);
-    res.redirect("http://localhost:3000/#/app/dashboard");
+    res.status(200).json({message: "ok"});
 });
 
 app.get("/zeldaSearch", async(req, res) => {

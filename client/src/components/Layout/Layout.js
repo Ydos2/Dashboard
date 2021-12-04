@@ -7,7 +7,6 @@ import {
 } from "react-router-dom";
 import classnames from "classnames";
 import {Box, IconButton, Link} from '@material-ui/core'
-import Icon from '@mdi/react'
 
 // styles
 import useStyles from "./styles";
@@ -17,9 +16,6 @@ import Header from "../Header";
 
 // pages
 import Dashboard from "../../pages/dashboard";
-import Typography from "../../pages/typography";
-import Tables from "../../pages/tables";
-//import Charts from "../../pages/charts";
 
 // context
 import { useLayoutState } from "../../context/LayoutContext";
@@ -42,8 +38,6 @@ function Layout(props) {
             <div className={classes.fakeToolbar} />
             <Switch>
               <Route path="/app/dashboard" component={Dashboard} />
-              <Route path="/app/typography" component={Typography} />
-              <Route path="/app/tables" component={Tables} />
               {/*<Route path="/app/ui/charts" component={Charts} />*/}
             </Switch>
             <Box

@@ -10,7 +10,6 @@ import {
   Settings as SettingsIcon,
   Person as AccountIcon,
 } from "@material-ui/icons";
-import classNames from "classnames";
 
 // styles
 import useStyles from "./styles";
@@ -19,11 +18,6 @@ import "./Header.css";
 // components
 import { Badge, Typography, Button } from "../Wrappers";
 
-// context
-import {
-  useLayoutState,
-  useLayoutDispatch,
-} from "../../context/LayoutContext";
 import { useUserDispatch, signOut } from "../../context/UserContext";
 
 import { ThemeContext, themes } from "../../context/ThemeContext";
@@ -31,8 +25,6 @@ import { ThemeContext, themes } from "../../context/ThemeContext";
 //import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import Avatar from '@mui/material/Avatar';
@@ -50,7 +42,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function writeJson(widgetId)
 {
-  cookies.set('widget'+widgetId, "true", { path: '/', sameSite: 'lax' });
+  cookies.set('widget' + widgetId, "true", { path: '/', sameSite: 'lax' });
   console.log(cookies.get('widget0'));
   console.log('Header');
   reloadPage();
@@ -82,8 +74,13 @@ export default function Header(props) {
   };
 
   widgetConf.map((obj) =>
-    (obj.id == 0) ? (cookies.get('widget0') == "true") ? obj.stateWidget = "true" : obj.stateWidget = "false" :
-    (obj.id == 1) ? (cookies.get('widget1') == "true") ? obj.stateWidget = "true" : obj.stateWidget = "false" : null
+    (obj.id === 0) ? (cookies.get('widget0') === "true") ? obj.stateWidget = "true" : obj.stateWidget = "false" :
+    (obj.id === 1) ? (cookies.get('widget1') === "true") ? obj.stateWidget = "true" : obj.stateWidget = "false" :
+    (obj.id === 2) ? (cookies.get('widget2') === "true") ? obj.stateWidget = "true" : obj.stateWidget = "false" :
+    (obj.id === 3) ? (cookies.get('widget3') === "true") ? obj.stateWidget = "true" : obj.stateWidget = "false" :
+    (obj.id === 4) ? (cookies.get('widget4') === "true") ? obj.stateWidget = "true" : obj.stateWidget = "false" :
+    (obj.id === 5) ? (cookies.get('widget5') === "true") ? obj.stateWidget = "true" : obj.stateWidget = "false" :
+    (obj.id === 6) ? (cookies.get('widget6') === "true") ? obj.stateWidget = "true" : obj.stateWidget = "false" : null
   );
   console.log(widgetConf);
 

@@ -1,5 +1,4 @@
 import React from "react";
-import axios from 'axios'
 import { getAllUsers, setRegisterUsers } from "../containers/AllFetch";
 
 var UserStateContext = React.createContext();

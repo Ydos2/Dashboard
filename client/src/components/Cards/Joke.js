@@ -7,36 +7,30 @@ import { Button, CardActionArea, CardActions } from '@mui/material';
 
 import { cookies } from './ConfWidget';
 
-import { getWeather } from '../../containers/AllFetch';
+import { getRandomJoke } from '../../containers/AllFetch';
 
-var conf = {id: 0, nameWidget: 'weather', stateWidget: "false"}
+var conf = {id: 6, nameWidget: 'joke', stateWidget: "false"}
 
 function writeJson(widgetId)
 {
   cookies.set('widget'+widgetId, "false", { path: '/', sameSite: 'lax' });
-  console.log(cookies.get('widget0'));
-  console.log('Weather');
+  console.log(cookies.get('widget6'));
+  console.log('Joke');
   window.location.reload(false);
 }
 
-export default function WeatherCard() {
-  const [title, setTitle] = useState("");
-  const [img, setImg] = useState("");
-  const [temperature, setTemperature] = useState("");
-  const [feelslike, setFeelslike] = useState("");
-  const [humidity, setHumidity] = useState("");
+export default function JokeCard() {
+  const [setup, setSetup] = useState("");
+  const [punchline, setPunchline] = useState("");
 
   const handleClose = () => {
     writeJson(conf.id);
   };
 
-  getWeather('Toulouse').then(res => {
+  getRandomJoke().then(res => {
     if (res.status === 200) {
-      setTitle(res.data.weather);
-      setImg(res.data.icon);
-      setTemperature(res.data.temperature);
-      setFeelslike(res.data.feelslike);
-      setHumidity(res.data.humidity);
+      setSetup(res.data.setup);
+      setPunchline(res.data.punchline);
     } else {
       console.log("Error unknown");
     }
@@ -50,16 +44,16 @@ export default function WeatherCard() {
         <CardMedia
           component="img"
           height="140"
-          image={img}
+          image="https://images.ctfassets.net/l3l0sjr15nav/31xuMrYaowoRPV5WsQ5j7w/f9d3ab9cc615531c9c150e6e16704394/Fathers-Day-Blog-Banner-Smallpdf.png"
           alt="green iguana"
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            {title}
+            Random Joke
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {'Currently it is ' + temperature + ' degree with feels like of ' + feelslike + ' degree.'}
-            {'Humidity ' + humidity + '%'}
+            {setup}
+            {punchline}
           </Typography>
         </CardContent>
       </CardActionArea>

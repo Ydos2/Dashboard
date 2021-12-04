@@ -7,36 +7,39 @@ import { Button, CardActionArea, CardActions } from '@mui/material';
 
 import { cookies } from './ConfWidget';
 
-import { getWeather } from '../../containers/AllFetch';
+import { getZeldaItemRand } from '../../containers/AllFetch';
 
-var conf = {id: 0, nameWidget: 'weather', stateWidget: "false"}
+var conf = {id: 4, nameWidget: 'zeldaItem', stateWidget: "false"}
 
 function writeJson(widgetId)
 {
   cookies.set('widget'+widgetId, "false", { path: '/', sameSite: 'lax' });
-  console.log(cookies.get('widget0'));
-  console.log('Weather');
+  console.log(cookies.get('widget4'));
+  console.log('ZeldaItem');
   window.location.reload(false);
 }
 
-export default function WeatherCard() {
-  const [title, setTitle] = useState("");
-  const [img, setImg] = useState("");
-  const [temperature, setTemperature] = useState("");
-  const [feelslike, setFeelslike] = useState("");
-  const [humidity, setHumidity] = useState("");
+export default function ZeldaItemCard() {
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
 
   const handleClose = () => {
     writeJson(conf.id);
   };
 
-  getWeather('Toulouse').then(res => {
+  const [timeState, setTimeTime] = useState(Date.now());
+
+  useEffect(() => {
+    const interval = setInterval(() => setTimeTime(Date.now()), 1000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+  
+  getZeldaItemRand('').then(res => {
     if (res.status === 200) {
-      setTitle(res.data.weather);
-      setImg(res.data.icon);
-      setTemperature(res.data.temperature);
-      setFeelslike(res.data.feelslike);
-      setHumidity(res.data.humidity);
+      setName(res.data.name);
+      setDescription(res.data.description);
     } else {
       console.log("Error unknown");
     }
@@ -50,16 +53,16 @@ export default function WeatherCard() {
         <CardMedia
           component="img"
           height="140"
-          image={img}
+          image="https://cdn02.nintendo-europe.com/media/images/10_share_images/portals_3/SI_Hub_Zelda_Portal.jpg"
           alt="green iguana"
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            {title}
+            Zelda Random Item
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {'Currently it is ' + temperature + ' degree with feels like of ' + feelslike + ' degree.'}
-            {'Humidity ' + humidity + '%'}
+            {name}
+            {description}
           </Typography>
         </CardContent>
       </CardActionArea>

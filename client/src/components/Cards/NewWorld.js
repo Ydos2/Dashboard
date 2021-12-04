@@ -7,36 +7,30 @@ import { Button, CardActionArea, CardActions } from '@mui/material';
 
 import { cookies } from './ConfWidget';
 
-import { getWeather } from '../../containers/AllFetch';
+import { getNewWorld } from '../../containers/AllFetch';
 
-var conf = {id: 0, nameWidget: 'weather', stateWidget: "false"}
+var conf = {id: 5, nameWidget: 'newWorld', stateWidget: "false"}
 
 function writeJson(widgetId)
 {
   cookies.set('widget'+widgetId, "false", { path: '/', sameSite: 'lax' });
-  console.log(cookies.get('widget0'));
-  console.log('Weather');
+  console.log(cookies.get('widget5'));
+  console.log('NewWorld');
   window.location.reload(false);
 }
 
-export default function WeatherCard() {
-  const [title, setTitle] = useState("");
-  const [img, setImg] = useState("");
-  const [temperature, setTemperature] = useState("");
-  const [feelslike, setFeelslike] = useState("");
-  const [humidity, setHumidity] = useState("");
+export default function NewWorldCard() {
+  const [name, setName] = useState("");
+  const [status, setStatus] = useState("");
 
   const handleClose = () => {
     writeJson(conf.id);
   };
 
-  getWeather('Toulouse').then(res => {
+  getNewWorld('Ashok Vatika').then(res => {
     if (res.status === 200) {
-      setTitle(res.data.weather);
-      setImg(res.data.icon);
-      setTemperature(res.data.temperature);
-      setFeelslike(res.data.feelslike);
-      setHumidity(res.data.humidity);
+      setName(res.data.name);
+      setStatus(res.data.status);
     } else {
       console.log("Error unknown");
     }
@@ -50,16 +44,16 @@ export default function WeatherCard() {
         <CardMedia
           component="img"
           height="140"
-          image={img}
+          image="https://images.ctfassets.net/j95d1p8hsuun/29peK2k7Ic6FsPAVjHWs8W/06d3add40b23b20bbff215f6979267e8/NW_OPENGRAPH_1200x630.jpg"
           alt="green iguana"
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            {title}
+            {"Server New World"}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {'Currently it is ' + temperature + ' degree with feels like of ' + feelslike + ' degree.'}
-            {'Humidity ' + humidity + '%'}
+            {'The server ' + name}
+            {'Is actually ' + status}
           </Typography>
         </CardContent>
       </CardActionArea>

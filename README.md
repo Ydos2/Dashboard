@@ -116,3 +116,19 @@ Gives you the price of the current trending crypto B)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;`currency.name:` the name of the crypto<br>
 &nbsp;&nbsp;&nbsp;&nbsp;`currency.price:` the price of the crypto<br>
 }<br>
+
+`/subscriptions`
+Gives you the price of the current trending crypto B)<br>
+**params**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;`mail:` The user's mail, he must have been logged-in using OAuth2 session.
+**return value**<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;`subs:` list of the user's subscriptions<br>
+&nbsp;&nbsp;&nbsp;&nbsp;`subs.name:` The name of the channel<br>
+&nbsp;&nbsp;&nbsp;&nbsp;`subs.description:` The description of the channel<br>
+&nbsp;&nbsp;&nbsp;&nbsp;`subs.image.url:` The thumbnail of the channel.
+}<br>
+**on error**<br>
+`400:` The mail haven't been provided<br>
+`401:` The provided mail haven't been logged in with OAuth2 meaning he is unauthorized, or that the key has expired, meaning he should get a new one<br>
+`404:` The request failed and the package i used crashed, alas i can't do anything about it, just try sending another request.<br>

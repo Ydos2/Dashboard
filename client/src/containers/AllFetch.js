@@ -82,7 +82,7 @@ function getYtb(mail) {
 
 function getYtbK(key, code) {
     return new Promise(function (resolve, reject) {
-        axios.get('http://localhost:8080/setYtbKey?access_token=' + key + '?mail' + code).then(res => {
+        axios.post('http://localhost:8080/setYtbKey?access_token=' + key + '&mail=' + code).then(res => {
             resolve(res)
         }).catch((err) => setImmediate(() => { reject(err) }))
     })

@@ -267,10 +267,10 @@ app.get("/trendingCrypto", async (req, res) => {
     }
 });
 
-app.get("/subscribtions", (req, res) => {
+app.get("/subscribtions", async (req, res) => {
     var mail = req.query.mail;
     if (mail === undefined) {
-        res.status(401).json({ error: "no mail provided"});
+        res.status(400).json({ error: "no mail provided"});
         return;
     }
     var key = ytbKey.get(mail);
@@ -278,12 +278,36 @@ app.get("/subscribtions", (req, res) => {
         res.status(401).json({ error: "user not logged in"});
         return;
     }
+    try {
+        var rsp = await fetch("https://www.googleapis.com/youtube/v3/subscriptions?part=snippet&mine=true&maxResults=50", {
+            "method": "GET",
+            "headers": {
+                "Authorization": "Bearer " + key
+            }
+        });
+        var json = await rsp.json();
+        var jsonpush = {};
+        jsonpush.subs = [];
+        if (json.items !== undefined) {
+            for(var i = 0; i < json.items.length; i++) {
+                var obj = json.items[i].snippet;
+                jsonpush.subs.push({
+                    name: obj.title,
+                    description: obj.description,
+                    image: obj.thumbnails.default
+                });
+            }
+        }
+        res.status(200).json({jsonpush});
+    } catch (e) {
+        console.log(e);
+        res.status(404).json({error: "unknown error"});
+    }
 });
 
 app.post("/setYtbKey", (req, res) => {
     var key = req.query.access_token;
     var mail = req.query.mail;
-
     if (key === undefined || mail === undefined) {
         res.status(401).json({ error: "NO"});//res.redirect("http://localhost:3000/#/app/dashboard");
         return;
@@ -330,7 +354,6 @@ app.get("/zeldaItem", async(req, res) => {
             }
         });
         var json = await rsp.json();
-        console.log(json);
         var item = json.count;
         if (item == 0) {
             res.json({name: "not found"});
@@ -456,6 +479,13 @@ app.get("/about.json", (req, res) => {
         widgets: [{
             name: "trending",
             description: "Check the price of the new trending cryptos"
+        }]
+    },{
+        name: "Youtube",
+        type: "OAuth2",
+        widgets: [{
+            name: "Subscriptions",
+            description: "Sends the current subscription of the logged-in user"
         }]
     }]
 });

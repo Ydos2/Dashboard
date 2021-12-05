@@ -33,25 +33,25 @@ export default function TimeCard() {
   const [timeState, setTimeTime] = useState(Date.now());
 
   useEffect(() => {
-    const interval = setInterval(() =>
-    getTime('Toulouse').then(res => {
-      if (res.status === 200) {
-        setCity(res.data.city);
-        setRegion(res.data.region);
-        setCountry(res.data.country);
-        setDate(res.data.date);
-        setTime(res.data.time);
-      } else {
-        console.log("Error unknown");
-      }
-    }).catch((err) => setImmediate(() => {
-      console.log("Error unknown");
-      }, 2000)), 1000);
+    const interval = setInterval(() => setTimeTime(Date.now()), 1000);
     return () => {
       clearInterval(interval);
     };
   }, []);
 
+  getTime('Toulouse').then(res => {
+    if (res.status === 200) {
+      setCity(res.data.city);
+      setRegion(res.data.region);
+      setCountry(res.data.country);
+      setDate(res.data.date);
+      setTime(res.data.time);
+    } else {
+      console.log("Error unknown");
+    }
+  }).catch((err) => setImmediate(() => {
+    console.log("Error unknown");
+    }, 2000));
 
   return (
     <Card sx={{ maxWidth: 345 }}>

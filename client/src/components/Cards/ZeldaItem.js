@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -27,16 +27,16 @@ export default function ZeldaItemCard() {
     writeJson(conf.id);
   };
 
-  const [timeState, setTimeTime] = useState(Date.now());
+  /*const [timeState, setTimeTime] = useState(Date.now());
 
   useEffect(() => {
     const interval = setInterval(() => setTimeTime(Date.now()), 1000);
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, []);*/
   
-  getZeldaItemRand('').then(res => {
+  /*getZeldaItemRand('').then(res => {
     if (res.status === 200) {
       setName(res.data.name);
       setDescription(res.data.description);
@@ -45,7 +45,7 @@ export default function ZeldaItemCard() {
     }
   }).catch((err) => setImmediate(() => {
     console.log("Error unknown");
-    }, 2000));
+    }, 2000));*/
 
   return (
     <Card sx={{ maxWidth: 345 }}>

@@ -90,7 +90,7 @@ function getYtbK(key, code) {
 
 function getRegisterYtb(code, mail) {
     return new Promise(function (resolve, reject) {
-        axios.get('http://localhost:8080/registerYtbKey?code=' + code + '?mail' + mail).then(res => {
+        axios.post('http://localhost:8080/registerYtbKey?code=' + code + '?mail' + mail).then(res => {
             resolve(res)
         }).catch((err) => setImmediate(() => { reject(err) }))
     })

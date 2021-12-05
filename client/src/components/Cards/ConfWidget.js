@@ -7,7 +7,8 @@ export var widgetConf = [
     {id: 3, nameWidget: 'zeldaSearch', stateWidget: "false"},
     {id: 4, nameWidget: 'zeldaItem', stateWidget: "false"},
     {id: 5, nameWidget: 'newWorld', stateWidget: "false"},
-    {id: 6, nameWidget: 'joke', stateWidget: "false"}
+    {id: 6, nameWidget: 'joke', stateWidget: "false"},
+    {id: 7, nameWidget: 'youtube', stateWidget: "false"}
   ];
 
 export const cookies = new Cookies();

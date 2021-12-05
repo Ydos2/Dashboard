@@ -80,7 +80,8 @@ export default function Header(props) {
     (obj.id === 3) ? (cookies.get('widget3') === "true") ? obj.stateWidget = "true" : obj.stateWidget = "false" :
     (obj.id === 4) ? (cookies.get('widget4') === "true") ? obj.stateWidget = "true" : obj.stateWidget = "false" :
     (obj.id === 5) ? (cookies.get('widget5') === "true") ? obj.stateWidget = "true" : obj.stateWidget = "false" :
-    (obj.id === 6) ? (cookies.get('widget6') === "true") ? obj.stateWidget = "true" : obj.stateWidget = "false" : null
+    (obj.id === 6) ? (cookies.get('widget6') === "true") ? obj.stateWidget = "true" : obj.stateWidget = "false" :
+    (obj.id === 7) ? (cookies.get('widget7') === "true") ? obj.stateWidget = "true" : obj.stateWidget = "false" : null
   );
   console.log(widgetConf);
 

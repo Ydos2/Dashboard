@@ -11,6 +11,7 @@ import ZeldaSearchCard from "../../components/Cards/ZeldaSearch";
 import ZeldaItemCard from "../../components/Cards/ZeldaItem";
 import NewWorldCard from "../../components/Cards/NewWorld";
 import JokeCard from "../../components/Cards/Joke";
+import YoutubeCard from "../../components/Cards/Youtube";
 
 import { widgetConf, cookies } from "../../components/Cards/ConfWidget";
 
@@ -32,7 +33,8 @@ export default function Dashboard(props) {
     (obj.id === 3) ? obj.stateWidget = cookies.get('widget3') :
     (obj.id === 4) ? obj.stateWidget = cookies.get('widget4') :
     (obj.id === 5) ? obj.stateWidget = cookies.get('widget5') :
-    (obj.id === 6) ? obj.stateWidget = cookies.get('widget6') : null
+    (obj.id === 6) ? obj.stateWidget = cookies.get('widget6') :
+    (obj.id === 7) ? obj.stateWidget = cookies.get('widget7') : null
   );
   console.log(widgetConf);
 
@@ -79,6 +81,12 @@ export default function Dashboard(props) {
           widgetObj.stateWidget === "true" ?
         (widgetObj.id === 6) ? <JokeCard></JokeCard> : null
       : null))*/}
+    </Grid>
+    <Grid item xs={3}>
+      {widgetConf.map((widgetObj) => (
+          widgetObj.stateWidget === "true" ?
+        (widgetObj.id === 7) ? <YoutubeCard></YoutubeCard> : null
+      : null))}
     </Grid>
   </Grid>
   );

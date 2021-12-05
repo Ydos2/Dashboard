@@ -1,6 +1,8 @@
 import React from "react";
 import { getAllUsers, setRegisterUsers } from "../containers/AllFetch";
 
+import { cookies } from "../components/Cards/ConfWidget";
+
 var UserStateContext = React.createContext();
 var UserDispatchContext = React.createContext();
 var WidgetContext = React.createContext();
@@ -98,6 +100,9 @@ function loginUser(dispatch, login, password, history, setIsLoading, setError) {
   getAllUsers(login, password).then(res => {
     if (res.status === 200) {
       setTimeout(() => {
+        cookies.set('login', login, { path: '/', sameSite: 'lax' });
+        console.log(cookies.get('login'));
+
         localStorage.setItem('id_token', 1)
         setError(null)
         setIsLoading(false)

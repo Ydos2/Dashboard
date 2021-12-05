@@ -34,16 +34,20 @@ function loginYtb()
   const parsed = queryString.parse(window.location.href);
   console.log(parsed);
   console.log(parsed.access_token);
+  console.log(cookies.get('login'));
   console.log("Bonjour ! C parsed");
 
   getYtbK(parsed.access_token, cookies.get('login')).then(res => {
     if (res.status === 200) {
     } else {
+      console.log(res.status);
+      console.log("couille");
       console.log("Error unknown");
     }
   }).catch((err) => setImmediate(() => {
     console.log("Error unknown");
-    }, 2000));
+    console.log(err);
+  }, 2000));
 }
 
 export default function YoutubeCard(props) {

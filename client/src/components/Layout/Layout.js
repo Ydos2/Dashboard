@@ -2,11 +2,10 @@ import React from "react";
 import {
   Route,
   Switch,
-  Redirect,
   withRouter,
 } from "react-router-dom";
 import classnames from "classnames";
-import {Box, IconButton, Link} from '@material-ui/core'
+import { Box } from '@material-ui/core'
 
 // styles
 import useStyles from "./styles";
@@ -38,7 +37,6 @@ function Layout(props) {
             <div className={classes.fakeToolbar} />
             <Switch>
               <Route path="/app/dashboard" component={Dashboard} />
-              {/*<Route path="/app/ui/charts" component={Charts} />*/}
             </Switch>
             <Box
               mt={5}

@@ -9,9 +9,7 @@ import { randomBytes } from 'crypto';
 
 import { cookies } from './ConfWidget';
 
-import { withRouter, useHistory, Redirect } from "react-router-dom";
-
-import { getYtb, getYtbK, getRegisterYtb } from '../../containers/AllFetch';
+import { getYtbK } from '../../containers/AllFetch';
 
 var conf = {id: 7, nameWidget: 'youtube', stateWidget: "false"}
 
@@ -30,8 +28,6 @@ function loginYtb()
   let url = "https://accounts.google.com/o/oauth2/v2/auth?client_id=213049852255-7lr2e9v67g3ahhon6i072l2a2o4shgtj.apps.googleusercontent.com&redirect_uri=http://localhost:3000/app/dashboard&response_type=token&scope=https://www.googleapis.com/auth/youtube&state=" + stateCrypto;
 
   window.location.href = url;
-  //cookies.set('apiKey', login, { path: '/', sameSite: 'lax' });
-  //console.log(cookies.get('login'));
 
   const queryString = require('query-string');
 
@@ -40,7 +36,7 @@ function loginYtb()
   console.log(parsed.access_token);
   console.log("Bonjour ! C parsed");
 
-  getRegisterYtb(parsed.access_token, cookies.get('login')).then(res => {
+  getYtbK(parsed.access_token, cookies.get('login')).then(res => {
     if (res.status === 200) {
     } else {
       console.log("Error unknown");
@@ -51,23 +47,10 @@ function loginYtb()
 }
 
 export default function YoutubeCard(props) {
-  const [name, setName] = useState("");
-  const [status, setStatus] = useState("");
 
   const handleClose = () => {
     writeJson(conf.id);
   };
-
-  
-  //console.log(cookies.get('login'));
-  /*getYtbK(stateCrypto, cookies.get('login')).then(res => {
-    if (res.status === 200) {
-    } else {
-      console.log("Error unknown");
-    }
-  }).catch((err) => setImmediate(() => {
-    console.log("Error unknown");
-    }, 2000));*/
 
   return (
     <Card sx={{ maxWidth: 345 }}>

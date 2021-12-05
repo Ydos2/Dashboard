@@ -9,8 +9,6 @@ import App from './components/App';
 import reportWebVitals from './reportWebVitals';
 import { LayoutProvider } from "./context/LayoutContext";
 import { UserProvider } from "./context/UserContext";
-import { BrowserRouter as Router } from 'react-router-dom';
-
 
 ReactDOM.render(
   <LayoutProvider>

@@ -99,7 +99,7 @@ export default function Header(props) {
           <List sx={{ pt: 0 }}>
             {widgetConf.map((widgetObj) => (
               <ListItem button onClick={() => placeItem(widgetObj.id)} key={widgetObj}>
-                {widgetObj.stateWidget == "true" ? null :
+                {widgetObj.stateWidget === "true" ? null :
                 <>
                   <ListItemAvatar>
                     <Avatar>

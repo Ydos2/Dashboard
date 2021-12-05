@@ -126,7 +126,7 @@ Gives you the price of the current trending crypto B)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;`subs:` list of the user's subscriptions<br>
 &nbsp;&nbsp;&nbsp;&nbsp;`subs.name:` The name of the channel<br>
 &nbsp;&nbsp;&nbsp;&nbsp;`subs.description:` The description of the channel<br>
-&nbsp;&nbsp;&nbsp;&nbsp;`subs.image.url:` The thumbnail of the channel.
+&nbsp;&nbsp;&nbsp;&nbsp;`subs.image.url:` The thumbnail of the channel.<br>
 }<br>
 **on error**<br>
 `400:` The mail haven't been provided<br>

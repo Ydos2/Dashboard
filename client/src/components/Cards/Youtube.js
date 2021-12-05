@@ -3,7 +3,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Button, CardActionArea, CardActions } from '@mui/material';
+import { Button, CardActions } from '@mui/material';
 
 import { randomBytes } from 'crypto';
 
@@ -54,20 +54,18 @@ export default function YoutubeCard(props) {
 
   return (
     <Card sx={{ maxWidth: 345 }}>
-      <CardActionArea>
-        <CardMedia
-          component="img"
-          height="140"
-          image="https://images.radio-canada.ca/q_auto,w_960/v1/ici-info/16x9/youtube-logo-2.jpg"
-          alt="green iguana"
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            {"Youtube"}
-          </Typography>
-          <Button onClick={loginYtb}>Login to Youtube</Button>
-        </CardContent>
-      </CardActionArea>
+      <CardMedia
+        component="img"
+        height="140"
+        image="https://images.radio-canada.ca/q_auto,w_960/v1/ici-info/16x9/youtube-logo-2.jpg"
+        alt="green iguana"
+      />
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+          {"Youtube"}
+        </Typography>
+        <Button onClick={loginYtb}>Login to Youtube</Button>
+      </CardContent>
       <CardActions>
         <Button size="small" color="primary" onClick={handleClose}>
           Delete

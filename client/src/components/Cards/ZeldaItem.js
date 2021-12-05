@@ -3,7 +3,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Button, CardActionArea, CardActions } from '@mui/material';
+import { Button, CardActions } from '@mui/material';
 
 import { cookies } from './ConfWidget';
 
@@ -49,23 +49,21 @@ export default function ZeldaItemCard() {
 
   return (
     <Card sx={{ maxWidth: 345 }}>
-      <CardActionArea>
-        <CardMedia
-          component="img"
-          height="140"
-          image="https://cdn02.nintendo-europe.com/media/images/10_share_images/portals_3/SI_Hub_Zelda_Portal.jpg"
-          alt="green iguana"
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            Zelda Random Item
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {name}
-            {description}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
+      <CardMedia
+        component="img"
+        height="140"
+        image="https://cdn02.nintendo-europe.com/media/images/10_share_images/portals_3/SI_Hub_Zelda_Portal.jpg"
+        alt="green iguana"
+      />
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+          Zelda Random Item
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {name}
+          {description}
+        </Typography>
+      </CardContent>
       <CardActions>
         <Button size="small" color="primary" onClick={handleClose}>
           Delete

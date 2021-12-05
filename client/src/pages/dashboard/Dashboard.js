@@ -41,51 +41,51 @@ export default function Dashboard(props) {
   return (
   <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
     <Grid item xs={3}>
-      {widgetConf.map((widgetObj) => (
+      {widgetConf.map((widgetObj, pos) => (
           widgetObj.stateWidget === "true" ?
-        (widgetObj.id === 0) ? <WeatherCard></WeatherCard> : null
+        (widgetObj.id === 0) ? <WeatherCard key={pos}></WeatherCard> : null
         : null))}
     </Grid>
     <Grid item xs={3}>
-      {widgetConf.map((widgetObj) => (
+      {widgetConf.map((widgetObj, pos) => (
           widgetObj.stateWidget === "true" ?
-        (widgetObj.id === 1) ? <TimeCard></TimeCard> : null
+        (widgetObj.id === 1) ? <TimeCard key={pos}></TimeCard> : null
         : null))}
     </Grid>
     <Grid item xs={3}>
-      {widgetConf.map((widgetObj) => (
+      {widgetConf.map((widgetObj, pos) => (
           widgetObj.stateWidget === "true" ?
-        (widgetObj.id === 2) ? <CryptoCard></CryptoCard> : null
+        (widgetObj.id === 2) ? <CryptoCard key={pos}></CryptoCard> : null
         : null))}
     </Grid>
     <Grid item xs={3}>
-      {widgetConf.map((widgetObj) => (
+      {widgetConf.map((widgetObj, pos) => (
           widgetObj.stateWidget === "true" ?
-        (widgetObj.id === 3) ? <ZeldaSearchCard></ZeldaSearchCard> : null
+        (widgetObj.id === 3) ? <ZeldaSearchCard key={pos}></ZeldaSearchCard> : null
         : null))}
     </Grid>
     <Grid item xs={3}>
-      {widgetConf.map((widgetObj) => (
+      {widgetConf.map((widgetObj, pos) => (
           widgetObj.stateWidget === "true" ?
-        (widgetObj.id === 4) ? <ZeldaItemCard></ZeldaItemCard> : null
+        (widgetObj.id === 4) ? <ZeldaItemCard key={pos}></ZeldaItemCard> : null
         : null))}
     </Grid>
     <Grid item xs={3}>
-      {widgetConf.map((widgetObj) => (
+      {widgetConf.map((widgetObj, pos) => (
           widgetObj.stateWidget === "true" ?
-        (widgetObj.id === 5) ? <NewWorldCard></NewWorldCard> : null
+        (widgetObj.id === 5) ? <NewWorldCard key={pos}></NewWorldCard> : null
         : null))}
     </Grid>
     <Grid item xs={3}>
-      {/*widgetConf.map((widgetObj) => (
+      {/*widgetConf.map((widgetObj, pos) => (
           widgetObj.stateWidget === "true" ?
-        (widgetObj.id === 6) ? <JokeCard></JokeCard> : null
+        (widgetObj.id === 6) ? <JokeCard key={pos}></JokeCard> : null
       : null))*/}
     </Grid>
     <Grid item xs={3}>
-      {widgetConf.map((widgetObj) => (
+      {widgetConf.map((widgetObj, pos) => (
           widgetObj.stateWidget === "true" ?
-        (widgetObj.id === 7) ? <YoutubeCard></YoutubeCard> : null
+        (widgetObj.id === 7) ? <YoutubeCard key={pos}></YoutubeCard> : null
       : null))}
     </Grid>
   </Grid>

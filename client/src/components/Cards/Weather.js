@@ -2,8 +2,9 @@ import { useState } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { Button, CardActionArea, CardActions } from '@mui/material';
+import { Button, CardActions } from '@mui/material';
 
 import { cookies } from './ConfWidget';
 
@@ -38,22 +39,22 @@ export default function WeatherCard() {
       setFeelslike(res.data.feelslike);
       setHumidity(res.data.humidity);
     } else {
-      console.log("Error unknown");
+      console.log("Error " + res.status);
     }
   }).catch((err) => setImmediate(() => {
-    console.log("Error unknown");
+    console.log("Error " + err);
     }, 2000));
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
-      <CardActionArea>
-        <CardMedia
-          component="img"
-          height="140"
-          image={img}
-          alt="green iguana"
-        />
-        <CardContent>
+    <Card sx={{ maxWidth: 345, display: 'flex' }} key={ 0 }>
+      <CardMedia
+        component="img"
+        sx={{ width: 300 }}
+        image={img}
+        alt="Live from space album cover"
+      />
+      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <CardContent sx={{ flex: '1 0 auto' }}>
           <Typography gutterBottom variant="h5" component="div">
             {title}
           </Typography>
@@ -62,12 +63,14 @@ export default function WeatherCard() {
             {'Humidity ' + humidity + '%'}
           </Typography>
         </CardContent>
-      </CardActionArea>
-      <CardActions>
-        <Button size="small" color="primary" onClick={handleClose}>
-          Delete
-        </Button>
-      </CardActions>
+        <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
+          <CardActions>
+            <Button size="small" color="primary" onClick={handleClose}>
+              Delete
+            </Button>
+          </CardActions>
+        </Box>
+      </Box>
     </Card>
   );
 }

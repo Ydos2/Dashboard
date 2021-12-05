@@ -3,7 +3,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Button, CardActionArea, CardActions } from '@mui/material';
+import { Button, CardActions } from '@mui/material';
 
 import { cookies } from './ConfWidget';
 
@@ -32,31 +32,29 @@ export default function NewWorldCard() {
       setName(res.data.name);
       setStatus(res.data.status);
     } else {
-      console.log("Error unknown");
+      console.log("Error " + res.status);
     }
   }).catch((err) => setImmediate(() => {
-    console.log("Error unknown");
+    console.log("Error " + err);
     }, 2000));
 
   return (
     <Card sx={{ maxWidth: 345 }}>
-      <CardActionArea>
-        <CardMedia
-          component="img"
-          height="140"
-          image="https://images.ctfassets.net/j95d1p8hsuun/29peK2k7Ic6FsPAVjHWs8W/06d3add40b23b20bbff215f6979267e8/NW_OPENGRAPH_1200x630.jpg"
-          alt="green iguana"
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            {"Server New World"}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {'The server ' + name}
-            {'Is actually ' + status}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
+      <CardMedia
+        component="img"
+        height="140"
+        image="https://images.ctfassets.net/j95d1p8hsuun/29peK2k7Ic6FsPAVjHWs8W/06d3add40b23b20bbff215f6979267e8/NW_OPENGRAPH_1200x630.jpg"
+        alt="green iguana"
+      />
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+          {"Server New World"}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {'The server ' + name}
+          {'Is actually ' + status}
+        </Typography>
+      </CardContent>
       <CardActions>
         <Button size="small" color="primary" onClick={handleClose}>
           Delete

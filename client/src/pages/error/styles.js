@@ -16,18 +16,19 @@ export default makeStyles(theme => ({
   logotype: {
     display: "flex",
     alignItems: "center",
-    marginBottom: theme.spacing(12),
+    marginBottom: theme.spacing(6),
     [theme.breakpoints.down("sm")]: {
       display: "none",
     },
   },
   logotypeText: {
-    fontWeight: 500,
+    fontWeight: 650,
+    fontSize: 60,
     color: "white",
     marginLeft: theme.spacing(2),
   },
   logotypeIcon: {
-    width: 70,
+    width: 300,
     marginRight: theme.spacing(2),
   },
   paperRoot: {

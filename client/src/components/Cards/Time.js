@@ -3,7 +3,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Button, CardActionArea, CardActions } from '@mui/material';
+import { Button, CardActions } from '@mui/material';
 
 import { cookies } from './ConfWidget';
 
@@ -47,30 +47,28 @@ export default function TimeCard() {
       setDate(res.data.date);
       setTime(res.data.time);
     } else {
-      console.log("Error unknown");
+      console.log("Error " + res.status);
     }
   }).catch((err) => setImmediate(() => {
-    console.log("Error unknown");
+    console.log("Error " + err);
     }, 2000));
 
   return (
     <Card sx={{ maxWidth: 345 }}>
-      <CardActionArea>
-        <CardMedia
-          component="img"
-          height="140"
-          image="https://www.danalearningcenters.ca/wp-content/uploads/2021/08/large.png"
-          alt="green iguana"
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            {time}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {country + ', ' + region + ', ' + city + ', ' + date}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
+      <CardMedia
+        component="img"
+        height="140"
+        image="https://www.danalearningcenters.ca/wp-content/uploads/2021/08/large.png"
+        alt="green iguana"
+      />
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+          {time}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {country + ', ' + region + ', ' + city + ', ' + date}
+        </Typography>
+      </CardContent>
       <CardActions>
         <Button size="small" color="primary" onClick={handleClose}>
           Delete

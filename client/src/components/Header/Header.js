@@ -22,7 +22,6 @@ import { useUserDispatch, signOut } from "../../context/UserContext";
 
 import { ThemeContext, themes } from "../../context/ThemeContext";
 
-//import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -97,8 +96,8 @@ export default function Header(props) {
         >
           <DialogTitle>{"Add your Widget !"}</DialogTitle>
           <List sx={{ pt: 0 }}>
-            {widgetConf.map((widgetObj) => (
-              <ListItem button onClick={() => placeItem(widgetObj.id)} key={widgetObj}>
+            {widgetConf.map((widgetObj, pos) => (
+              <ListItem button onClick={() => placeItem(widgetObj.id)} key={pos}>
                 {widgetObj.stateWidget === "true" ? null :
                 <>
                   <ListItemAvatar>
@@ -135,24 +134,6 @@ export default function Header(props) {
             color="secondary"
           >
             <AddIcon classes={{ root: classes.headerIcon }} />
-          </Badge>
-        </IconButton>
-        {/*Settings*/}
-        <IconButton
-          color="inherit"
-          aria-haspopup="true"
-          aria-controls="settings-menu"
-          onClick={e => {
-            setSettingsMenu(e.currentTarget);
-            setIsParameter(false);
-          }}
-          className={classes.headerMenuButton}
-        >
-          <Badge
-            badgeContent={null}
-            color="secondary"
-          >
-            <SettingsIcon classes={{ root: classes.headerIcon }} />
           </Badge>
         </IconButton>
         {/*Profile*/}

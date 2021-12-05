@@ -1,7 +1,6 @@
 import React from "react";
 //import { render } from "react-dom";
 //import { BrowserRouter } from "react-router-dom";
-import './App.css';
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 // components

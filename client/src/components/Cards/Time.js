@@ -33,28 +33,28 @@ export default function TimeCard() {
   const [timeState, setTimeTime] = useState(Date.now());
 
   useEffect(() => {
-    const interval = setInterval(() => setTimeTime(Date.now()), 1000);
+    const interval = setInterval(() => setTimeTime(
+      getTime('Toulouse').then(res => {
+      if (res.status === 200) {
+        setCity(res.data.city);
+        setRegion(res.data.region);
+        setCountry(res.data.country);
+        setDate(res.data.date);
+        setTime(res.data.time);
+      } else {
+        console.log("Error " + res.status);
+      }
+    }).catch((err) => setImmediate(() => {
+      console.log("Error " + err);
+      }, 20000))
+    ), 10000);
     return () => {
       clearInterval(interval);
     };
   }, []);
 
-  getTime('Toulouse').then(res => {
-    if (res.status === 200) {
-      setCity(res.data.city);
-      setRegion(res.data.region);
-      setCountry(res.data.country);
-      setDate(res.data.date);
-      setTime(res.data.time);
-    } else {
-      console.log("Error " + res.status);
-    }
-  }).catch((err) => setImmediate(() => {
-    console.log("Error " + err);
-    }, 2000));
-
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 370 }}>
       <CardMedia
         component="img"
         height="140"

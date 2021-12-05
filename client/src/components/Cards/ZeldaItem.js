@@ -27,28 +27,28 @@ export default function ZeldaItemCard() {
     writeJson(conf.id);
   };
 
-  /*const [timeState, setTimeTime] = useState(Date.now());
+  const [timeState, setTimeTime] = useState(Date.now());
 
   useEffect(() => {
-    const interval = setInterval(() => setTimeTime(Date.now()), 1000);
+    const interval = setInterval(() => setTimeTime(
+      getZeldaItemRand('').then(res => {
+        if (res.status === 200) {
+          setName(res.data.name);
+          setDescription(res.data.description);
+        } else {
+          console.log("Error unknown");
+        }
+      }).catch((err) => setImmediate(() => {
+        console.log("Error unknown");
+        }, 2000))
+    ), 20000);
     return () => {
       clearInterval(interval);
     };
-  }, []);*/
-  
-  /*getZeldaItemRand('').then(res => {
-    if (res.status === 200) {
-      setName(res.data.name);
-      setDescription(res.data.description);
-    } else {
-      console.log("Error unknown");
-    }
-  }).catch((err) => setImmediate(() => {
-    console.log("Error unknown");
-    }, 2000));*/
+  }, []);
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 370 }}>
       <CardMedia
         component="img"
         height="140"
@@ -60,8 +60,7 @@ export default function ZeldaItemCard() {
           Zelda Random Item
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {name}
-          {description}
+          {name + ' : ' + description}
         </Typography>
       </CardContent>
       <CardActions>

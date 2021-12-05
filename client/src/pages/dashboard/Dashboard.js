@@ -77,10 +77,10 @@ export default function Dashboard(props) {
         : null))}
     </Grid>
     <Grid item xs={3}>
-      {/*widgetConf.map((widgetObj, pos) => (
+      {widgetConf.map((widgetObj, pos) => (
           widgetObj.stateWidget === "true" ?
         (widgetObj.id === 6) ? <JokeCard key={pos}></JokeCard> : null
-      : null))*/}
+      : null))}
     </Grid>
     <Grid item xs={3}>
       {widgetConf.map((widgetObj, pos) => (

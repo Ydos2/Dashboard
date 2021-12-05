@@ -46,7 +46,7 @@ export default function WeatherCard() {
     }, 2000));
 
   return (
-    <Card sx={{ maxWidth: 345, display: 'flex' }} key={ 0 }>
+    <Card sx={{ maxWidth: 370, display: 'flex' }} key={ 0 }>
       <CardMedia
         component="img"
         sx={{ width: 300 }}

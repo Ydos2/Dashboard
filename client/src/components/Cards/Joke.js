@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -27,19 +27,28 @@ export default function JokeCard() {
     writeJson(conf.id);
   };
 
-  getRandomJoke().then(res => {
-    if (res.status === 200) {
-      setSetup(res.data.setup);
-      setPunchline(res.data.punchline);
-    } else {
-      console.log("Error " + res.status);
-    }
-  }).catch((err) => setImmediate(() => {
-    console.log("Error " + err);
-    }, 2000));
+  const [timeState, setTimeTime] = useState(Date.now());
+
+  useEffect(() => {
+    const interval = setInterval(() => setTimeTime(
+      getRandomJoke().then(res => {
+      if (res.status === 200) {
+        setSetup(res.data.setup);
+        setPunchline(res.data.punchline);
+      } else {
+        console.log("Error " + res.status);
+      }
+    }).catch((err) => setImmediate(() => {
+      console.log("Error " + err);
+      }, 2000))
+    ), 30000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 370 }}>
       <CardMedia
         component="img"
         height="140"

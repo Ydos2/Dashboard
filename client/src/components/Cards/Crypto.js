@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import Card from '@mui/material/Card';
 import { styled, useTheme } from '@mui/material/styles';
-import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -15,11 +13,9 @@ import TableFooter from '@mui/material/TableFooter';
 import TablePagination from '@mui/material/TablePagination';
 import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
-import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import LastPageIcon from '@mui/icons-material/LastPage';
-import { Button, CardActions } from '@mui/material';
+import { Button } from '@mui/material';
 
 import { cookies } from './ConfWidget';
 
@@ -120,7 +116,7 @@ export default function CryptoCard() {
     }, 2000));
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 370 }}>
       <CardMedia
         component="img"
         height="140"
@@ -128,7 +124,7 @@ export default function CryptoCard() {
         alt="green iguana"
       />
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 345 }} aria-label="customized table">
+        <Table sx={{ minWidth: 370 }} aria-label="customized table">
           <TableHead>
             <StyledTableRow>
               <StyledTableCell>Name</StyledTableCell>

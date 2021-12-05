@@ -120,7 +120,7 @@ Gives you the price of the current trending crypto B)<br>
 `/subscriptions`
 Gives you the price of the current trending crypto B)<br>
 **params**<br>
-&nbsp;&nbsp;&nbsp;&nbsp;`mail:` The user's mail, he must have been logged-in using OAuth2 session.
+&nbsp;&nbsp;&nbsp;&nbsp;`mail:` The user's mail, he must have been logged-in using OAuth2 session.<br>
 **return value**<br>
 {<br>
 &nbsp;&nbsp;&nbsp;&nbsp;`subs:` list of the user's subscriptions<br>

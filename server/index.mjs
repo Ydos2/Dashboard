@@ -280,7 +280,7 @@ app.get("/subscribtions", (req, res) => {
     }
 });
 
-app.psot("/setYtbKey", (req, res) => {
+app.post("/setYtbKey", (req, res) => {
     var key = req.query.access_token;
     var mail = req.query.mail;
 

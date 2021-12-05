@@ -35,6 +35,11 @@ var waitingYtbKey = new Map();
 
 app.use(cors());
 
+String.prototype.replaceAll = function(str1, str2, ignore) 
+{
+    return this.replace(new RegExp(str1.replace(/([\/\,\!\\\^\$\{\}\[\]\(\)\.\*\+\?\|\<\>\-\&])/g,"\\$&"),(ignore?"gi":"g")),(typeof(str2)=="string")?str2.replace(/\$/g,"$$$$"):str2);
+}
+
 const client = new SMTPClient ({
 	user: 'joojnathan.popolaf@gmail.com',
 	password: 'Hu7,!PlYtG',
@@ -77,7 +82,7 @@ app.get("/login", (req, res) => {
     if (!pass || !mail)
         res.status(401);
     var dbref = ref(getDatabase());
-    var path = "users/" + mail.replace(".", "_");
+    var path = "users/" + mail.replaceAll(".", "_");
     get(child(dbref, path)).then((snapshot) => {
         if (snapshot.exists() === false) {
             res.status(401).json ({ message : "Unregistered user"});
@@ -98,7 +103,7 @@ app.get("/login", (req, res) => {
 app.get("/confirmRegister", (req, res) => {
     var mail = req.query.mail;
     var token = req.query.token;
-    var path = "users/" + mail.replace(".", "_");
+    var path = "users/" + mail.replaceAll(".", "_");
     const dbRef = ref(getDatabase());
     get(child(dbRef, path)).then((snapshot) => {
         if (snapshot.exists()) {
@@ -106,6 +111,7 @@ app.get("/confirmRegister", (req, res) => {
             var pass = snapshot.child("password").val();
             if (currToken != token) {
                 res.status(401).json({ message: "unknown user"});
+                return;
             } else {
                 set(ref(db, path), {
                     mail: mail,
@@ -113,10 +119,12 @@ app.get("/confirmRegister", (req, res) => {
                     password: pass,
                     registerKey: ""
                 });
-                res.status(200).json({ message: "Sucess"}).redirect("http://localhost:3000/dashboard/login");
+                res.status(200).json({message: "Go back to login page (express.redirect isn't working we can't do anything about that)"}  );
+                return;
             }
         } else
-            res.status(401).json({ message: "unknown user"});;
+            res.status(401).json({ message: "unknown user"});
+            return;
     });
 });
 
@@ -124,7 +132,7 @@ app.get("/resetPassword", (req, res) => {
     var token = req.query.token;
     var mail = req.query.mail;
     var newPass = req.query.pass;
-    var path = "users/" + mail.replace(".", "_");
+    var path = "users/" + mail.replaceAll(".", "_");
     if (mail === undefined || token === undefined || newPass === undefined) {
         res.status(401).json({message: "Something is missing"});
         return;
@@ -151,23 +159,29 @@ app.get("/register", (req, res) => {
     var pass = req.query.pass;
     var mail = req.query.mail;
     var name = req.query.name;
+
     if (!pass || !mail || !name)
         res.json({ message: "empty password or mail"});
     var token = crypto.randomBytes(15).toString("hex");
-    var path = mail.replace(".", "_");
-    set(ref(db, 'users/' + path), {
-        mail: mail,
-        name: name,
-        password: pass,
-        registerKey : token
-      });
-      sendOAuthMail(mail, true, token);
-      res.status(200).json({ message: "c\'est ok"});
+    var path = mail.replaceAll(".", "_");
+    try {
+        set(ref(db, 'users/' + path), {
+            mail: mail,
+            name: name,
+            password: pass,
+            registerKey : token
+        });
+        sendOAuthMail(mail, true, token);
+        res.status(200).json({ message: "c\'est ok"});
+    } catch (e) {
+        console.log(e);
+        res.status(401);
+    }
 });
 
 app.get("/forgotPassword", (req, res) => {
     var mail = req.query.mail;
-    var path = "users/" + mail.replace(".", "_");
+    var path = "users/" + mail.replaceAll(".", "_");
     const dbRef = ref(getDatabase());
     get(child(dbRef, path)).then((snapshot) => {
         if (snapshot.exists()) { 
@@ -179,8 +193,8 @@ app.get("/forgotPassword", (req, res) => {
                 name: snapshot.child("name").val(),
                 passChangeKey: key 
             });
-            res.status(200).json({message: "ok"});
             sendPasswordMail(mail, key);
+            res.status(200).redirect("http://localhost:3000/login");
             return;
         } else {
             res.status(404).json({message: "unknown user"});

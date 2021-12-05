@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Card from '@mui/material/Card';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -121,20 +121,36 @@ export default function YoutubeCard(props) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(1);
 
+  const [timeState, setTimeTime] = useState(Date.now());
+
   if (cookies.get('YoutubeOpen') === "true")
-  {
     getYtb(cookies.get('login')).then(res => {
       if (res.status === 200) {
-        setCurrency(res.data.jsonpush.subs);
-        console.log(res.data.jsonpush.subs);
-        console.log(cookies.get('login'));
+          setCurrency(res.data.jsonpush.subs);
+          console.log(res.data.jsonpush.subs);
+          console.log(cookies.get('login'));
+      } else if (res.status === 401) {
+          cookies.set('YoutubeOpen', "false", { path: '/', sameSite: 'lax' });
+          console.log("Not valid token");
       } else {
-        console.log("Error " + res.status);
+          console.log("Error " + res.status);
+          cookies.set('YoutubeOpen', "false", { path: '/', sameSite: 'lax' });
       }
+      console.log(':::::::::::::::');
     }).catch((err) => setImmediate(() => {
       console.log("Error " + err);
-      }, 2000));
-  }
+      cookies.set('YoutubeOpen', "false", { path: '/', sameSite: 'lax' });
+    }, 2000));
+  console.log(cookies.get('YoutubeOpen'));
+  /*{
+      const interval = setInterval(() => setTimeTime(
+        
+        ), 100000);
+      return () => {
+        clearInterval(interval);
+      };
+     }}, []);*/
+
 
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - currency.length) : 0;
@@ -159,7 +175,7 @@ export default function YoutubeCard(props) {
         image="https://images.radio-canada.ca/q_auto,w_960/v1/ici-info/16x9/youtube-logo-2.jpg"
         alt="green iguana"
       />
-      {(cookies.get('YoutubeOpen') === "true" && currency ?
+      {(cookies.get('YoutubeOpen') === "true" ?
       <>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 370 }} aria-label="customized table">
